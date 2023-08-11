@@ -1,0 +1,123 @@
+version: '3.4'
+
+services:
+# BusinessService
+# 1.Gateway
+   aries.service:
+     image: "harbor.aries.com.cn/aries/service/service:latest"
+     build:
+      context: .
+      dockerfile: aries.service/Dockerfile
+     ports:
+        - "16666:6666"
+        - "19090:9090" 
+     restart: always
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:6666
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=000000
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+     volumes:
+      - D:/BigData&AI/aries/aries/certs/https:/https:ro
+     networks: 
+      - "aries"
+   aries.service.dapr:
+     image: "harbor.aries.com.cn/daprio/daprd:latest"
+     command: [ "./daprd", "--app-id", "AriesService", "--app-port", "6666","--app-protocol","grpc","--dapr-grpc-port","50001","--app-ssl","--config","/dapr/config.yaml" ,"--metrics-port","9090" ]
+     depends_on:
+        - aries.service
+     restart: always
+     volumes:
+        - "D:/aries/config:/dapr"
+     network_mode: "service:aries.service"
+  
+# 2. galaxyqueryservice
+   aries.galaxy.query:
+    image: "harbor.aries.com.cn/aries/galaxy/query:latest"
+    build:
+      context: .
+      dockerfile: aries.galaxy.query/Dockerfile
+    ports:
+        - "5228:6666"
+        - "9228:9090"
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:6666
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=000000
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+    volumes:
+       - D:/BigData&AI/aries/aries/certs/https:/https:ro
+    networks: 
+      - "aries"
+   
+   aries.galaxy.query.dapr:
+     image: "harbor.aries.com.cn/daprio/daprd:latest"
+     command: [ "./daprd", "--app-id", "GalaxyQueryService", "--app-port", "6666","--app-protocol","grpc","--dapr-grpc-port","50001","--app-ssl","--config","/dapr/config.yaml" ,"--metrics-port","9090" ]
+     depends_on:
+        - aries.galaxy.query
+     restart: always
+     volumes:
+        - "D:/aries/config:/dapr"
+     network_mode: "service:aries.galaxy.query"
+# 3. galilequeryservice   
+   aries.galile.query:
+     image: "harbor.aries.com.cn/aries/galile/query:latest"
+     build:
+        context: .
+        dockerfile: aries.galile.query/Dockerfile
+     ports:
+        - "6228:6666"
+        - "8228:9090"
+     restart: always
+     environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:6666
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=000000
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+     volumes:
+        - D:/BigData&AI/aries/aries/certs/https:/https:ro
+     networks: 
+        - "aries"
+ 
+   aries.galile.query.dapr:
+     image: "harbor.aries.com.cn/daprio/daprd:latest"
+     command: [ "./daprd", "--app-id", "GalileQueryService", "--app-port", "6666","--app-protocol","grpc","--dapr-grpc-port","50001","--app-ssl","--config","/dapr/config.yaml" ,"--metrics-port","9090" ]
+     depends_on:
+        - aries.galile.query
+     restart: always
+     volumes:
+        - "D:/aries/config:/dapr"
+     network_mode: "service:aries.galile.query"
+   
+# 3.
+#  middleware
+#  1.ziplin
+   aries.zipkin: 
+     image: "harbor.aries.com.cn/openzipkin/zipkin"
+     container_name: "aries.zipkin"
+     ports:
+      - "9411:9411"
+     restart: always
+     networks:
+      - "aries"
+#  2.prometheus
+   aries.prometheus:
+     image: "prom/prometheus:latest"
+     command: ["--config.file","/etc/prometheus/prometheus.yml","--web.listen-address","0.0.0.0:15050"]
+     container_name: "aries.prometheus"
+     environment:
+        - "TZ=Asia/Shanghai"
+     ports:
+        - "15050:15050"
+     restart: always
+     volumes:
+      -  "D:/aries/config/prometheus.yml:/etc/prometheus/prometheus.yml"
+  
+networks: 
+    aries:
+      driver: bridge
+      ipam:
+       driver: default
+       config:
+        - subnet: "192.168.80.0/20"
