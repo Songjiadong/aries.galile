@@ -1,5 +1,0 @@
-obj\Debug\net6.0\galaxy/Galaxy.cs: C:/Users/songjd/.nuget/packages/grpc.tools/2.51.0/build/native/include/google/protobuf/wrappers.proto\
- C:/Users/songjd/.nuget/packages/grpc.tools/2.51.0/build/native/include/google/protobuf/any.proto\
- C:/Users/songjd/.nuget/packages/grpc.tools/2.51.0/build/native/include/google/protobuf/timestamp.proto\
- ../aries.proto/base/common.proto\
- ../aries.proto/galaxy/galaxy.proto
