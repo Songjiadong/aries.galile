@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Protobuf Include="..\aries.proto\base\common.proto" GrpcServices="Server" Link="Protos\common.proto" ProtoRoot="..\aries.proto\" />
-    <Protobuf Include="..\aries.proto\galile\galile.proto" GrpcServices="Server" Link="Protos\galile.proto" ProtoRoot="..\aries.proto\" />
+    <Protobuf Include="..\aries.proto\galileo\galileo.proto" GrpcServices="Server" Link="Protos\galileo.proto" ProtoRoot="..\aries.proto\" />
   </ItemGroup>
 
   <ItemGroup>
