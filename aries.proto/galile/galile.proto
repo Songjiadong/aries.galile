@@ -8,15 +8,25 @@ package aries;
 // 搜索请求项
 message SearchReq {
    string Keyword=1;
-   repeated string KeywordFields=3;
+   repeated EsQueryItemField KeywordFields=3;
+   repeated EsQueryItemField PhraseFields=4;
+  google.protobuf.Int32Value PhraseSlop=5;
+  google.protobuf.DoubleValue Boost=6;
    AriesPage Page=2;
 }
 //搜索请求项（按分类）
 message SearchByIndexReq{
   string Keyword=1;
-  repeated string KeywordFields=4;
+  repeated EsQueryItemField KeywordFields=4;
+  repeated EsQueryItemField PhraseFields=5;
+  google.protobuf.Int32Value PhraseSlop=6;
+  google.protobuf.DoubleValue Boost=7;
   string Index=2;
   AriesPage Page=3;
+}
+message EsQueryItemField{
+  string Item=1;
+  double Boost=2;
 }
 //提示请求项
 message AutoCompleteReq{
