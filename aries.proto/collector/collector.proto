@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+import "base/common.proto";
+option csharp_namespace = "aries.collector.grpc";
+package aries;
+//用户行为采集信息
+message CollectInfo {
+    string UserName=2;
+    string Ip=3;
+    int32 Business=4;
+    string Title=5;
+    string Url=6;
+}
+//Top采集
+message CollectCountInfo{
+   string Url=1;
+   string Title=2;
+}

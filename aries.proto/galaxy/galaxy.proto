@@ -1,0 +1,75 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+import "base/common.proto";
+option csharp_namespace = "aries.galaxy.grpc";
+package aries;
+//节点
+message Node {
+	string Id=1; 
+    string Name=2; 
+    repeated string Labels=3;
+    map<string, google.protobuf.Any> Properties = 4;
+}
+//节点列表请求项
+message NodeListReq
+{
+    repeated Node Nodes=1;
+}
+//节点项
+message NodeInfoReq {
+	Node Node=1;
+}
+//关系项
+message Relation{
+    string Id=1; 
+    google.protobuf.StringValue Name=2; 
+    google.protobuf.StringValue Type=3;
+    google.protobuf.StringValue StartNodeId=4;
+    google.protobuf.StringValue EndNodeId=5;
+    map<string, google.protobuf.Any> Properties = 6;
+}
+//关系请求项
+message RelationInfoReq{
+  Node Start=1;
+  Relation Relation=2;
+  Node End=3;
+}
+//最短路径请求项
+message ShortestPathReq{
+  google.protobuf.StringValue Start=1;
+  google.protobuf.StringValue End=2;
+}
+// 搜索请求项
+message SearchReq {
+   string Keyword=1;
+   AriesPage Page=2;
+}
+message GraphDegreeSearchReq{
+  google.protobuf.StringValue Keyword=1;
+  int32 Degree=2;
+}
+//图查询请求
+message GraphSearchReq{
+  google.protobuf.StringValue Keyword=1;
+
+}
+//机构
+message UnitInfo{
+    string Id=1;
+    google.protobuf.StringValue Name=2;
+    
+}
+message UnitInfoReq{
+ UnitInfo Unit=1;
+}
+
+//人
+message PersonInfo{
+    string Id=1;
+    google.protobuf.StringValue Name=2;
+    
+}
+message PersonInfoReq{
+ PersonInfo Unit=1;
+}

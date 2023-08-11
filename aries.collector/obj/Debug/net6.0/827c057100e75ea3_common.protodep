@@ -1,0 +1,3 @@
+obj\Debug\net6.0\base/Common.cs: C:/Users/songjd/.nuget/packages/grpc.tools/2.55.1/build/native/include/google/protobuf/wrappers.proto\
+ C:/Users/songjd/.nuget/packages/grpc.tools/2.55.1/build/native/include/google/protobuf/timestamp.proto\
+ ../aries.proto/base/common.proto

@@ -1,0 +1,106 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+//import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "aries.common.grpc";
+
+package aries;
+
+//bytes
+message AriesBytes{
+  bytes result=1;
+}
+message AriesNullBytes{
+google.protobuf.BytesValue result=1;
+}
+//bool
+message AriesBool{
+  bool result=1;
+}
+message AriesNullBool{
+  google.protobuf.BoolValue result=1;
+}
+//string
+message AriesString{
+  string result=1;
+}
+message AriesNullString{
+google.protobuf.StringValue result=1;
+}
+message AriesStringList{
+   repeated string items=1;
+}
+
+//int
+message AriesInt{
+   int32 result=1;
+}
+message AriesNullInt{
+google.protobuf.Int32Value result=1;
+}
+//long
+message AriesLong{
+  int64 result=1;
+}
+message AriesNullLong{
+google.protobuf.Int64Value result=1;
+}
+//float
+message AriesFloat{
+   float result=1;
+}
+message AriesNullFloat{
+google.protobuf.FloatValue result=1;
+}
+//double
+message AriesDouble{
+   double result=1;
+}
+message AriesNullDouble{
+google.protobuf.DoubleValue result=1;
+}
+//分页
+message AriesPage{
+  int32 RowNum=1;
+  int32 Size=2;
+}
+//错误消息
+message AriesErr{
+  string ErrMsg=1;
+  string ErrCode=2;
+}
+//Json
+message AriesJson{
+  string Result=1;
+}
+message AriesJsonListResp {
+	oneof result{
+		string JsonList = 1;
+		AriesErr Error=2;
+	}
+}
+message AriesJsonObjResp{
+	oneof result{
+		string JsonObj=1;
+		AriesErr Error=2;
+	}
+}
+
+message AriesIdReq{
+  string Id=1;
+}
+message AriesPersonInfo{
+  string UserId=1;
+  string UserName=2;
+  google.protobuf.Timestamp At=3;
+}
+//通用浏览请求
+message AriesBrowseInfoReq{
+	string Id=1;
+	string Url=2;
+	AriesPersonInfo Browser=3;
+}
+message KVInfo{
+  string Id=1;
+  string Name=2;
+}

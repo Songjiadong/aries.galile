@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>10343108-575a-41a0-843f-9c50a72b34ec</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\aries.proto\base\common.proto" GrpcServices="Server" Link="Protos\common.proto" ProtoRoot="..\aries.proto\" />
+    <Protobuf Include="..\aries.proto\galaxy\galaxy.proto" GrpcServices="Server" Link="Protos\galaxy.proto" ProtoRoot="..\aries.proto\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Com.Ctrip.Framework.Apollo" Version="2.10.0" />
+    <PackageReference Include="Com.Ctrip.Framework.Apollo.Configuration" Version="2.10.0" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.9.0" />
+    <PackageReference Include="Dapr.Extensions.Configuration" Version="1.9.0" />
+     <PackageReference Include="MySql.Data" Version="8.0.32" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\aries\aries.common\aries.common.csproj" />
+  </ItemGroup>
+
+</Project>

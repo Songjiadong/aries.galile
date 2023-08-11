@@ -1,0 +1,233 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\BigData&AI\\aries\\aries\\aries.collector\\aries.collector.csproj": {}
+  },
+  "projects": {
+    "D:\\aries\\aries.common.db.phoenix\\aries.common.db.phoenix.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\aries\\aries.common.db.phoenix\\aries.common.db.phoenix.csproj",
+        "projectName": "aries.common.db.phoenix",
+        "projectPath": "D:\\aries\\aries.common.db.phoenix\\aries.common.db.phoenix.csproj",
+        "packagesPath": "C:\\Users\\songjd\\.nuget\\packages\\",
+        "outputPath": "D:\\aries\\aries.common.db.phoenix\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\songjd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\aries\\aries.common\\aries.common.csproj": {
+                "projectPath": "D:\\aries\\aries.common\\aries.common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Google.Protobuf": {
+              "target": "Package",
+              "version": "[3.24.0-rc2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\aries\\aries.common\\aries.common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\aries\\aries.common\\aries.common.csproj",
+        "projectName": "aries.common",
+        "projectPath": "D:\\aries\\aries.common\\aries.common.csproj",
+        "packagesPath": "C:\\Users\\songjd\\.nuget\\packages\\",
+        "outputPath": "D:\\aries\\aries.common\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\songjd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.22.0, )"
+            },
+            "WebHDFS.Client": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\BigData&AI\\aries\\aries\\aries.collector\\aries.collector.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\BigData&AI\\aries\\aries\\aries.collector\\aries.collector.csproj",
+        "projectName": "aries.collector",
+        "projectPath": "D:\\BigData&AI\\aries\\aries\\aries.collector\\aries.collector.csproj",
+        "packagesPath": "C:\\Users\\songjd\\.nuget\\packages\\",
+        "outputPath": "D:\\BigData&AI\\aries\\aries\\aries.collector\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\songjd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\aries\\aries.common.db.phoenix\\aries.common.db.phoenix.csproj": {
+                "projectPath": "D:\\aries\\aries.common.db.phoenix\\aries.common.db.phoenix.csproj"
+              },
+              "D:\\aries\\aries.common\\aries.common.csproj": {
+                "projectPath": "D:\\aries\\aries.common\\aries.common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Com.Ctrip.Framework.Apollo": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            },
+            "Com.Ctrip.Framework.Apollo.Configuration": {
+              "target": "Package",
+              "version": "[2.10.1, )"
+            },
+            "Dapr.AspNetCore": {
+              "target": "Package",
+              "version": "[1.11.0, )"
+            },
+            "Dapr.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[1.11.0, )"
+            },
+            "Grpc.AspNetCore": {
+              "target": "Package",
+              "version": "[2.55.0, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.18.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

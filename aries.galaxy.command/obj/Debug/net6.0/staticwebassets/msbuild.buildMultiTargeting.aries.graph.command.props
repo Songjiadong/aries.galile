@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\aries.graph.command.props" />
+</Project>
