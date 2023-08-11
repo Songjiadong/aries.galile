@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\aries.galaxy.service.props" />
-</Project>
