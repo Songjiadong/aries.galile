@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.common.db.neo4j", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.common.db.elasticsearch", "..\..\..\aries\aries.common.db.elasticsearch\aries.common.db.elasticsearch.csproj", "{0F32D729-5BA0-4C8B-8EB9-45A0538F81E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.galile.query", "aries.galile.query\aries.galile.query.csproj", "{4DBFC476-8653-418A-8658-9268E914F9D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.galileo.query", "aries.galile.query\aries.galileo.query.csproj", "{4DBFC476-8653-418A-8658-9268E914F9D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.collector", "aries.collector\aries.collector.csproj", "{A63D6D5B-051D-48BF-B1CB-3C35524C0878}"
 EndProject

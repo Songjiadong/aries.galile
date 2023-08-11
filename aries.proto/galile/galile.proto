@@ -2,7 +2,7 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/any.proto";
 import "base/common.proto";
-option csharp_namespace = "aries.galile.grpc";
+option csharp_namespace = "aries.galileo.grpc";
 package aries;
 
 // ËÑË÷ÇëÇóÏî

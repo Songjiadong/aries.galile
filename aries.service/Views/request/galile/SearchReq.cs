@@ -1,8 +1,8 @@
 ﻿using aries.common;
-using AriesGrpc = aries.galile.grpc;
+using AriesGrpc = aries.galileo.grpc;
 using aries.webapi;
 
-namespace aries.service.galile.Views.request
+namespace aries.service.galileo.Views.request
 {
     public class SearchReq : TReq<AriesGrpc.SearchReq>
     {

@@ -2,9 +2,9 @@
 using aries.common.logger;
 using Dapr;
 using Microsoft.AspNetCore.Mvc;
-using AriesGalileGrpc = aries.galile.grpc;
+using AriesGalileGrpc = aries.galileo.grpc;
 using AriesCollectorGrpc = aries.collector.grpc;
-using aries.service.galile.Views.request;
+using aries.service.galileo.Views.request;
 using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace aries.service.Controllers
 {
-    public partial class GalileController
+    public partial class GalileoController
     {
         [HttpPost("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
