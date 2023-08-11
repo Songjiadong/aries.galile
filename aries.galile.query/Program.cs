@@ -1,4 +1,4 @@
-using aries.galile.query;
+using aries.galileo.query;
 using Com.Ctrip.Framework.Apollo;
 
 IConfiguration configuration = new ConfigurationBuilder()

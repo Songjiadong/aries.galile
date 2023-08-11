@@ -8,12 +8,12 @@ namespace aries.service.Controllers
     [Route("api/galile")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
-    public partial class GalileController : ControllerBase
+    public partial class GalileoController : ControllerBase
     {
         private readonly DaprClient client;
         private readonly IConfiguration configuration;
         private readonly string daprappqueryId;
-        public GalileController(DaprClient client, IConfiguration configuration)
+        public GalileoController(DaprClient client, IConfiguration configuration)
         {
             this.client = client;
             this.configuration = configuration;

@@ -12,7 +12,7 @@ using aries.common.db;
 using aries.common.db.neo4j;
 
 
-namespace aries.galile.query
+namespace aries.galileo.query
 {
     public partial class QueryService : AppCallback.AppCallbackBase
     {

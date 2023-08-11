@@ -1,4 +1,4 @@
-﻿using aries.galile.grpc;
+﻿using aries.galileo.grpc;
 using System.Data;
 using aries.common.db.elasticsearch;
 using AriesEs = aries.common.db.elasticsearch;
@@ -8,7 +8,7 @@ using aries.common;
 using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
 
-namespace aries.galile.query
+namespace aries.galileo.query
 {
     public class QueryHandler : IQueryHandler
     {
