@@ -23,9 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\aries\aries.common.db.elasticsearch\aries.common.db.elasticsearch.csproj" />
     <ProjectReference Include="..\..\..\..\aries\aries.common.db.neo4j\aries.common.db.neo4j.csproj" />
     <ProjectReference Include="..\..\..\..\aries\aries.common\aries.common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>

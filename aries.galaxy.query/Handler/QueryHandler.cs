@@ -12,36 +12,9 @@ namespace aries.galaxy.query
     public class QueryHandler : IQueryHandler
     {
         private readonly AriesNeo4j.DBService neo4jClient;
-        private readonly AriesEs.DBService esClient;
-        public QueryHandler(AriesEs.DBService esClient, AriesNeo4j.DBService neo4jClient)
+        public QueryHandler( AriesNeo4j.DBService neo4jClient)
         {
-            this.esClient = esClient;
             this.neo4jClient = neo4jClient;
-        }
-
-        public List<OrganizationDocInfo> AutoComplete(GraphSearchReq request)
-        {
-            List<OrganizationDocInfo> result = new List<OrganizationDocInfo>();
-            //var response = esClient.Search<OrganizationDocInfo>(s => s
-            //                             .Query(q => q.Bool(selector => selector
-            //                                                .Must(queries => queries.Match(m => m.Query(request.Keyword).Field(f => f.Name)))))
-            //                             .Highlight(h => h
-            //                               .PreTags("<span style='color:red;'>")
-            //                               .PostTags("</span>")
-            //                               .FragmentSize(100)
-            //                               .NoMatchSize(150)
-            //                               .Fields(
-            //                                   fs => fs
-            //                                       .Field(p => p.Name)
-            //                               )
-            //                             )
-            //                         );
-            //var hits = response.HitsMetadata.Hits;
-            //foreach (var item in hits)
-            //{
-            //    result.Add(item.Source);
-            //}
-            return result;
         }
 
         public AriesObject<GraphInfo> Search(GraphDegreeSearchReq request)

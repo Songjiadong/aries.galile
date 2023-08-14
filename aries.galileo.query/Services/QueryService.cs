@@ -10,7 +10,7 @@ using aries.common.logger;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using aries.common.db;
 using aries.common.db.neo4j;
-
+using aries.common;
 
 namespace aries.galileo.query
 {
@@ -23,10 +23,10 @@ namespace aries.galileo.query
             AriesEs.DBService? esClient = null;
             AriesPhoenix.DBService? phoenixClient=null;
             this.configuration = configuration;
-           
+            ConfigService<QueryService> configService = new common.ConfigService<QueryService>(configuration);
             //2初始化elasticsearch
-            EsConfigOptions esOps = ApolloPull<EsConfigOptions>("elasticsearch")!;
-            esClient = ClientInit(() =>
+            EsConfigOptions esOps = configService.ApolloPull<EsConfigOptions>("elasticsearch")!;
+            esClient = configService.ClientInit(() =>
             {
                 return new AriesEs.DBService(new AriesEs.DBOpService<QueryService>(esOps));
             });
@@ -45,29 +45,6 @@ namespace aries.galileo.query
             //{
             //    throw new NullReferenceException($"{nameof(QueryHandler)}初始化失败...");
             //}
-        }
-        private TService? ClientInit<TService>(Func<TService> initFunc)
-        {
-            TService? result = default;
-            try
-            {
-                result = initFunc.Invoke();
-            }
-            catch (Exception ex)
-            {
-                LoggerService.Logger<QueryService>(ex, LogLevel.Error);
-            }
-            return result;
-        }
-        private TConfigOptions? ApolloPull<TConfigOptions>(string sectionName) where TConfigOptions : ConfigOptions
-        {
-            TConfigOptions? ops = System.Activator.CreateInstance<TConfigOptions>();
-            configuration.GetSection(sectionName).Bind(ops);
-            if (ops!.Setted == false)
-            {
-                throw new Exception($"Apollo配置中心拉取{sectionName}数据失败,请联系管理员....");
-            }
-            return ops;
         }
         public override async Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)
         {

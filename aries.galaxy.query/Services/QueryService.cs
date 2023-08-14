@@ -24,7 +24,6 @@ namespace aries.galaxy.query
         public QueryService(IConfiguration configuration)
         {
             AriesNeo4j.DBService? neo4jClient = null;
-            AriesEs.DBService? esClient = null;
             this.configuration = configuration;
             //1初始化neo4j
 
@@ -33,15 +32,10 @@ namespace aries.galaxy.query
             {
                  return new AriesNeo4j.DBService(new AriesNeo4j.DBOpService<QueryService>(neo4jOps));
             });
-            //2初始化elasticsearch
-            EsConfigOptions esOps = ApolloPull<EsConfigOptions>("elasticsearch")!; 
-            esClient = ClientInit(() =>
+          
+            if (neo4jClient is not null)
             {
-                return new AriesEs.DBService(new AriesEs.DBOpService<QueryService>(esOps));
-            });
-            if (neo4jClient is not null && esClient is not null)
-            {
-                handler = new QueryHandler(esClient, neo4jClient);
+                handler = new QueryHandler(neo4jClient);
             }
             else 
             {
@@ -65,7 +59,7 @@ namespace aries.galaxy.query
         }
         private TConfigOptions? ApolloPull<TConfigOptions>(string sectionName) where TConfigOptions : ConfigOptions
         {
-            TConfigOptions? ops=default;
+            TConfigOptions? ops= System.Activator.CreateInstance<TConfigOptions>();
             configuration.GetSection(sectionName).Bind(ops);
             if (ops!.Setted == false)
             {
@@ -85,9 +79,6 @@ namespace aries.galaxy.query
                         break;
                     case "Galaxy$Query$ShortestPath":
                         response.Data = ShortestPath(request, context);
-                        break;
-                    case "Galaxy$Query$AutoComplete":
-                        response.Data = AutoComplete(request, context);
                         break;
                     default:
                         throw new NotSupportedException($"this {request.Method} is not supported.");
