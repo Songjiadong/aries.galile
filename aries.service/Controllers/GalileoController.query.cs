@@ -26,18 +26,18 @@ namespace aries.service.Controllers
             List<AriesGalileGrpc.EsQueryItemField> keywordFields = new List<AriesGalileGrpc.EsQueryItemField>()
             { 
                 //资讯标题
-                new AriesGalileGrpc.EsQueryItemField { Boost=1,Item="Title"},
+                new AriesGalileGrpc.EsQueryItemField { Boost=10,Item="Title"},
                 //机构名称
-                new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Name"},
+                new AriesGalileGrpc.EsQueryItemField{ Boost=10,Item="Name"},
 
             };
             req.KeywordFields.AddRange(keywordFields);
             List<AriesGalileGrpc.EsQueryItemField> phraseFields = new List<AriesGalileGrpc.EsQueryItemField>()
             {
                 //资讯摘要
-                new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item ="Abstract"},
+                new AriesGalileGrpc.EsQueryItemField{ Boost=5,Item ="Abstract"},
                 //资讯正文
-                new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Content"},
+                new AriesGalileGrpc.EsQueryItemField{ Boost=5,Item="Content"},
                 //机构介绍
                 new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
@@ -78,12 +78,12 @@ namespace aries.service.Controllers
                 "organization" => new List<AriesGalileGrpc.EsQueryItemField>()
                 { 
                     //机构名称
-                    new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Name"},
+                    new AriesGalileGrpc.EsQueryItemField{ Boost=10,Item="Name"},
                 },
                 _ => new List<AriesGalileGrpc.EsQueryItemField>()
                 {
                      //资讯标题
-                    new AriesGalileGrpc.EsQueryItemField { Boost=1,Item="Title"},
+                    new AriesGalileGrpc.EsQueryItemField { Boost=10,Item="Title"},
                 }
             };
             req.KeywordFields.AddRange(keywordFields);
@@ -92,12 +92,12 @@ namespace aries.service.Controllers
                 "organization" => new List<AriesGalileGrpc.EsQueryItemField>()
                {
                    //机构介绍
-                   new AriesGalileGrpc.EsQueryItemField { Boost = 1, Item = "Introduction" }
+                   new AriesGalileGrpc.EsQueryItemField { Boost = 5, Item = "Introduction" }
                },
                 _ => new List<AriesGalileGrpc.EsQueryItemField>()
                {
                      //资讯摘要
-                    new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item ="Abstract"},
+                    new AriesGalileGrpc.EsQueryItemField{ Boost=5,Item ="Abstract"},
                     //资讯正文
                     new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Content"},
                }
