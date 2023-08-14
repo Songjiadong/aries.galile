@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  aries.galaxy.query:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:6666
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=000000
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+    volumes:
+       - D:/Source/Repos/aries.galile/certs/https:/https:ro
+  
+  aries.galile.query:
+      environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_URLS=https://+:6666
+          - ASPNETCORE_Kestrel__Certificates__Default__Password=000000
+          - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+      volumes:
+           - D:/Source/Repos/aries.galile/certs/https:/https:ro
+
+  aries.service:
+      environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:6666
+      - HOST_IP=10.1.7.22:16666
+      volumes:
+       - D:/Source/Repos/aries.galile/certs/https:/https:ro

@@ -1,4 +1,4 @@
-﻿using aries.galile.grpc;
+﻿using aries.galileo.grpc;
 using System.Data;
 using aries.common.db.elasticsearch;
 using AriesEs = aries.common.db.elasticsearch;
@@ -8,7 +8,7 @@ using aries.common;
 using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
 
-namespace aries.galile.query
+namespace aries.galileo.query
 {
     public class QueryHandler : IQueryHandler
     {
@@ -23,19 +23,41 @@ namespace aries.galile.query
         public async Task<AriesList<SearchItemInfo>> SearchByIndexAsync(SearchByIndexReq request) 
         {
             AriesList<SearchItemInfo> result = new AriesList<SearchItemInfo> { };
+            List<string> keywordFieldList = new List<string>();
+            foreach (var item in request.KeywordFields)
+            {
+                string tmp = item.Item;
+                if (item.Boost != 1)
+                {
+                    tmp += $"^{item.Boost}";
+                }
+                keywordFieldList.Add(tmp);
+            }
+            List<string> phraseFieldList = new List<string>();
+            foreach (var item in request.PhraseFields)
+            {
+                string tmp = item.Item;
+                if (item.Boost != 1)
+                {
+                    tmp += $"^{item.Boost}";
+                }
+                phraseFieldList.Add(tmp);
+            }
+            EsSearchRequest req = new EsSearchRequest()
+            {
+                IndexList = new List<string> { request.Index },
+                Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
+                Keyword = new EsKeywordQueryInfo()
+                {
+                    Keyword = request.Keyword,
+                    KeywordFieldList = keywordFieldList,
+                    PhraseFieldList = phraseFieldList,
+                    Boost = request.Boost,
+                    PhraseSlop = request.PhraseSlop,
+                }
+            };
             try
             {
-                EsSearchRequest req = new EsSearchRequest()
-                {
-                    IndexList=new List<string> {request.Index },
-                    Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
-                    Keyword = new EsKeywordQueryInfo()
-                    {
-                        Keyword = request.Keyword,
-                        KeywordFieldList = new List<string>() { "title", "source", "author" },
-                        PhraseFieldList = new List<string>() { "abstract" }
-                    }
-                };
                 EsSearchResponse<JsonObject> resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
                 //转化
             }
@@ -48,18 +70,40 @@ namespace aries.galile.query
         public async Task<AriesList<SearchItemInfo>> SearchAsync(SearchReq request)
         {
             AriesList<SearchItemInfo> result = new AriesList<SearchItemInfo> { };
+            List<string> keywordFieldList = new List<string>();
+            foreach (var item in request.KeywordFields)
+            {
+                string tmp = item.Item;
+                if (item.Boost != 1)
+                {
+                    tmp += $"^{item.Boost}";
+                }
+                keywordFieldList.Add(tmp);
+            }
+            List<string> phraseFieldList = new List<string>();
+            foreach (var item in request.PhraseFields)
+            {
+                string tmp = item.Item;
+                if (item.Boost != 1)
+                {
+                    tmp += $"^{item.Boost}";
+                }
+                phraseFieldList.Add(tmp);
+            }
+            EsSearchRequest req = new EsSearchRequest()
+            {
+                Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
+                Keyword = new EsKeywordQueryInfo()
+                {
+                    Keyword = request.Keyword,
+                    KeywordFieldList = keywordFieldList,
+                    PhraseFieldList = phraseFieldList,
+                    Boost = request.Boost,
+                    PhraseSlop = request.PhraseSlop,
+                }
+            };
             try
             {
-                EsSearchRequest req = new EsSearchRequest()
-                {
-                    Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
-                    Keyword = new EsKeywordQueryInfo()
-                    {
-                        Keyword = request.Keyword,
-                        KeywordFieldList = new List<string>() { "title","name", "Keyowrds" },
-                        PhraseFieldList=new List<string>() { "abstract"}
-                    }
-                };
               EsSearchResponse<JsonObject> resp=  await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
               //转化
             }

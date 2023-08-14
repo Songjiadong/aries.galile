@@ -1,4 +1,4 @@
-﻿namespace aries.galile.query
+﻿namespace aries.galileo.query
 {
     public class SearchItemInfo
     {

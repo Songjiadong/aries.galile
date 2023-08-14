@@ -1,7 +1,7 @@
 ﻿using aries.common;
-using aries.galile.grpc;
+using aries.galileo.grpc;
 
-namespace aries.galile.query
+namespace aries.galileo.query
 {
     public interface IQueryHandler : aries.common.cqrs.IQueryHandler
     {

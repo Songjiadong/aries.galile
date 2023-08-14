@@ -1,12 +1,12 @@
 ﻿using aries.common;
 using aries.common.grpc;
-using aries.galile.grpc;
+using aries.galileo.grpc;
 using Dapr.Client.Autogen.Grpc.v1;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using System.Text.Json;
 
-namespace aries.galile.query
+namespace aries.galileo.query
 {
     public partial class QueryService
     {

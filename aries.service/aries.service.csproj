@@ -26,7 +26,7 @@
   <ItemGroup>
     <Protobuf Include="..\aries.proto\base\common.proto" GrpcServices="Client" Link="Protos\common.proto" ProtoRoot="..\aries.proto\" />
     <Protobuf Include="..\aries.proto\galaxy\galaxy.proto" GrpcServices="Client" Link="Protos\galaxy.proto" ProtoRoot="..\aries.proto\" />
-   <Protobuf Include="..\aries.proto\galile\galile.proto" GrpcServices="Client" Link="Protos\galile.proto" ProtoRoot="..\aries.proto\" />
+   <Protobuf Include="..\aries.proto\galileo\galileo.proto" GrpcServices="Client" Link="Protos\galileo.proto" ProtoRoot="..\aries.proto\" />
     <Protobuf Include="..\aries.proto\collector\collector.proto" GrpcServices="Client" Link="Protos\collector.proto" ProtoRoot="..\aries.proto\" />
   </ItemGroup>
   <ItemGroup>
