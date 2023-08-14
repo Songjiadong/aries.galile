@@ -9,7 +9,6 @@ using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
 using aries.common.db;
-using System.Collections.Generic;
 
 namespace aries.service.Controllers
 {
@@ -45,7 +44,7 @@ namespace aries.service.Controllers
             req.PhraseFields.AddRange(phraseFields);
             try
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galile$Query$Search", req);
+                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
                 result = Ok(temp);
             }
             catch (DaprApiException ex)
@@ -107,7 +106,7 @@ namespace aries.service.Controllers
             req.PhraseFields.AddRange(phraseFields);
             try
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galile$Query$SearchByIndex", req);
+                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
                 result = Ok(temp);
             }
             catch (DaprApiException ex)
@@ -171,7 +170,7 @@ namespace aries.service.Controllers
             };
             try
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galile$Query$GetTopList", req);
+                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
                 result = Ok(temp);
             }
             catch (DaprApiException ex)
