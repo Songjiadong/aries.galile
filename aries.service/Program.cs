@@ -18,7 +18,8 @@ builder.WebHost.ConfigureAppConfiguration((context, appBuilder) =>
 });
 // Add services to the container.
 var services = builder.Services;
-services.AddControllers().AddJsonOptions(options => {
+services.AddControllers().AddJsonOptions(options =>
+{
     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
     options.JsonSerializerOptions.IgnoreReadOnlyProperties = false;
@@ -39,14 +40,19 @@ services.AddSwaggerGen(c =>
             Title = $"Aries Service RESTful API {version}",
             Version = version,
             Description = $"AriesService {version}",
-            Contact = new OpenApiContact() { Email = "songjiadong@miic.com.cn", Name = "JustinSong", Url = new Uri("http://www.miic.com.cn") }
+            Contact = new OpenApiContact()
+            {
+                Email = Environment.GetEnvironmentVariable("SWAGGER_EMAIL"),
+                Name = Environment.GetEnvironmentVariable("SWAGGER_NAME"),
+                Url = new Uri(Environment.GetEnvironmentVariable("SWAGGER_URL")!)
+            }
         });
         c.AddServer(new OpenApiServer() { Url = "http://" + Environment.GetEnvironmentVariable("HOST_IP"), Description = Environment.GetEnvironmentVariable("HOST_IP") });
         c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
     });
     c.OrderActionsBy(o => o.RelativePath);
-     //Directory.GetFiles(AppContext.BaseDirectory, CommonSource.CommonXmlConfig["appSettings:add:WebApiMetaDataFile:value"].ToString(), SearchOption.AllDirectories).ToList().ForEach(f => options.IncludeXmlComments(f, true));
+    //Directory.GetFiles(AppContext.BaseDirectory, CommonSource.CommonXmlConfig["appSettings:add:WebApiMetaDataFile:value"].ToString(), SearchOption.AllDirectories).ToList().ForEach(f => options.IncludeXmlComments(f, true));
     c.DocumentFilter<ApiTagFilter>();
     c.OperationFilter<FileUploadFilter>();
 
