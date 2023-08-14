@@ -24,5 +24,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:6666
       - HOST_IP=10.1.7.22:16666
+      - SWAGGER_EMAIL=songjiadong@miic.com.cn 
+      - SWAGGER_NAME=JustinSong 
+      - SWAGGER_URL=http://www.miic.com.cn 
       volumes:
        - D:/BigData&AI/aries/aries/certs/https:/https:ro 
