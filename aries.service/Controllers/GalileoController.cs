@@ -17,14 +17,14 @@ namespace aries.service.Controllers
         {
             this.client = client;
             this.configuration = configuration;
-            this.daprappqueryId = CheckandGetAppId("dapr_galile_query_app_id");
+            this.daprappqueryId = CheckandGetAppId("dapr_galileo_query_app_id");
         }
         private string CheckandGetAppId(string key)
         {
             string value = this.configuration.GetValue<string>(key);
             if (string.IsNullOrEmpty(value))
             {
-                LoggerService.Logger<GalaxyController>(new Exception($"{key} cannot be null or empty!"), LogLevel.Error);
+                LoggerService.Logger<GalileoController>(new Exception($"{key} cannot be null or empty!"), LogLevel.Error);
                 throw new NullReferenceException();
             }
             else

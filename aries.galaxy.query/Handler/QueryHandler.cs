@@ -11,10 +11,10 @@ namespace aries.galaxy.query
 {
     public class QueryHandler : IQueryHandler
     {
-        private readonly AriesNeo4j.DBService neo4jClient;
+        private readonly AriesNeo4j.DBService client;
         public QueryHandler( AriesNeo4j.DBService neo4jClient)
         {
-            this.neo4jClient = neo4jClient;
+            this.client = neo4jClient;
         }
 
         public AriesObject<GraphInfo> Search(GraphDegreeSearchReq request)
@@ -30,7 +30,7 @@ namespace aries.galaxy.query
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result = neo4jClient.Graph(whereCond: cond, request.Degree);
+                result = client.Graph(whereCond: cond, request.Degree);
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace aries.galaxy.query
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result = neo4jClient.ShortestPath<From, To>(request.StartNode!, request.EndNode!, cond);
+                result = client.ShortestPath<From, To>(request.StartNode!, request.EndNode!, cond);
             }
             catch (Exception ex)
             {
