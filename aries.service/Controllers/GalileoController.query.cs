@@ -50,17 +50,17 @@ namespace aries.service.Controllers
             catch (DaprApiException ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (DaprException ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (Exception ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             return result;
         }
@@ -112,17 +112,17 @@ namespace aries.service.Controllers
             catch (DaprApiException ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (DaprException ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (Exception ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             return result;
         }
@@ -145,17 +145,16 @@ namespace aries.service.Controllers
             }
             catch (DaprApiException ex)
             {
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (DaprException ex)
             {
 
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (Exception ex)
             {
-
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
         }
         [HttpGet("{topNum}/getTopList")]
@@ -176,17 +175,17 @@ namespace aries.service.Controllers
             catch (DaprApiException ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (DaprException ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             catch (Exception ex)
             {
                 result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
+                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
             }
             return result;
         }
