@@ -13,12 +13,6 @@ namespace aries.galaxy.query
         /// <returns>查询数据集</returns>
         AriesObject<GraphInfo> Search(GraphDegreeSearchReq request);
         /// <summary>
-        /// 搜索提示操作
-        /// </summary>
-        /// <param name="request">request</param>
-        /// <returns>提示数据集</returns>
-        List<OrganizationDocInfo> AutoComplete(GraphSearchReq request);
-        /// <summary>
         /// 查询最近距离操作
         /// </summary>
         /// <param name="request">request</param>
