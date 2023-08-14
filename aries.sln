@@ -15,13 +15,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.common.db.neo4j", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.common.db.elasticsearch", "..\..\..\aries\aries.common.db.elasticsearch\aries.common.db.elasticsearch.csproj", "{0F32D729-5BA0-4C8B-8EB9-45A0538F81E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.galileo.query", "aries.galile.query\aries.galileo.query.csproj", "{4DBFC476-8653-418A-8658-9268E914F9D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.galileo.query", "aries.galileo.query\aries.galileo.query.csproj", "{4DBFC476-8653-418A-8658-9268E914F9D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.collector", "aries.collector\aries.collector.csproj", "{A63D6D5B-051D-48BF-B1CB-3C35524C0878}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aries.common.db.phoenix", "..\..\..\aries\aries.common.db.phoenix\aries.common.db.phoenix.csproj", "{5D98C42F-4DC3-4CC1-B8D6-9522220FC38C}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3827981E-D0C4-4F94-91AE-28DA82160726}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{87F6E854-6B93-4625-9653-90CEF94AD6E0}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
