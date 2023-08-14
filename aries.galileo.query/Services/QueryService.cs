@@ -17,13 +17,11 @@ namespace aries.galileo.query
     public partial class QueryService : AppCallback.AppCallbackBase
     {
         private readonly IQueryHandler handler;
-        private readonly IConfiguration configuration;
         public QueryService(IConfiguration configuration)
         {
             AriesEs.DBService? esClient = null;
             AriesPhoenix.DBService? phoenixClient=null;
-            this.configuration = configuration;
-            ConfigService<QueryService> configService = new common.ConfigService<QueryService>(configuration);
+            ConfigService<QueryService> configService = new ConfigService<QueryService>(configuration);
             //2初始化elasticsearch
             EsConfigOptions esOps = configService.ApolloPull<EsConfigOptions>("elasticsearch")!;
             esClient = configService.ClientInit(() =>

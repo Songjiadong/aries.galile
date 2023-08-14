@@ -35,9 +35,9 @@ namespace aries.service.Controllers
             List<AriesGalileGrpc.EsQueryItemField> phraseFields = new List<AriesGalileGrpc.EsQueryItemField>()
             {
                 //资讯摘要
-                new AriesGalileGrpc.EsQueryItemField{ Boost=5,Item ="Abstract"},
+                new AriesGalileGrpc.EsQueryItemField{ Boost=2,Item ="Abstract"},
                 //资讯正文
-                new AriesGalileGrpc.EsQueryItemField{ Boost=5,Item="Content"},
+                new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Content"},
                 //机构介绍
                 new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
@@ -92,12 +92,12 @@ namespace aries.service.Controllers
                 "organization" => new List<AriesGalileGrpc.EsQueryItemField>()
                {
                    //机构介绍
-                   new AriesGalileGrpc.EsQueryItemField { Boost = 5, Item = "Introduction" }
+                   new AriesGalileGrpc.EsQueryItemField { Boost = 1, Item = "Introduction" }
                },
                 _ => new List<AriesGalileGrpc.EsQueryItemField>()
                {
                      //资讯摘要
-                    new AriesGalileGrpc.EsQueryItemField{ Boost=5,Item ="Abstract"},
+                    new AriesGalileGrpc.EsQueryItemField{ Boost=2,Item ="Abstract"},
                     //资讯正文
                     new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Content"},
                }
