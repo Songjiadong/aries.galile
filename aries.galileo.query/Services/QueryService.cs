@@ -76,13 +76,13 @@ namespace aries.galileo.query
             {
                 switch (request.Method)
                 {
-                    case "Galile$Query$Search":
+                    case "Galileo$Query$Search":
                         response.Data =await SearchAsync(request, context);
                         break;
-                    case "Galile$Query$SearchByIndex":
+                    case "Galileo$Query$SearchByIndex":
                         response.Data = await SearchByIndexAsync(request, context);
                         break;
-                    case "Galile$Query$GetTopList":
+                    case "Galileo$Query$GetTopList":
                         response.Data =await GetTopListAsync(request, context);
                         break;
                     default:
