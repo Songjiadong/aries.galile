@@ -22,7 +22,7 @@ namespace aries.service.Controllers
             ActionResult result;
             AriesGalileoGrpc.SearchReq req = searchReq.Convert();
             req.Boost = 1;
-            req.PhraseSlop = 1;
+            //req.PhraseSlop = 1;
             List<AriesGalileoGrpc.EsQueryItemField> keywordFields = new List<AriesGalileoGrpc.EsQueryItemField>()
             { 
                 //资讯标题
@@ -56,7 +56,7 @@ namespace aries.service.Controllers
             ActionResult result;
             AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
             req.Boost = 1;
-            req.PhraseSlop = 1;
+            //req.PhraseSlop = 1;
             List<AriesGalileoGrpc.EsQueryItemField> keywordFields = searchReq.Index switch
             {
                 "organization" => new List<AriesGalileoGrpc.EsQueryItemField>()

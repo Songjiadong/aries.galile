@@ -5,12 +5,38 @@ using aries.galaxy.grpc;
 using Dapr.Client.Autogen.Grpc.v1;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using System.Data;
 using System.Text.Json;
 
 namespace aries.galaxy.query
 {
     public partial class QueryService
     {
+        private async Task<Any> AutoCompleteAsync(InvokeRequest request, ServerCallContext context) 
+        {
+            AriesJsonListResp output = new AriesJsonListResp();
+            if (request.Data.TryUnpack<GraphSearchReq>(out GraphSearchReq searchReq))
+            {
+                var searchInfo = new SearchInfo()
+                {
+                    Keyword = searchReq.Keyword
+                };
+                AriesDataTable dt =await handler!.AutoCompleteAsync(searchInfo);
+                var temp = from dr in dt.Result.AsEnumerable()
+                           select new
+                           {
+                               //Category = GraphManage.LabelConvert(dr["label"].ToString()!),
+                               Id = dr["item." + DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Id)].ToString(),
+                               Name = dr["item." + DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name)].ToString()
+                           };
+                output.JsonList = JsonSerializer.Serialize(temp);
+            }
+            else
+            {
+                throw new Exception();
+            }
+            return Any.Pack(output);
+        }
         /// <summary>
         /// 图谱搜索
         /// </summary>
@@ -18,12 +44,12 @@ namespace aries.galaxy.query
         /// <param name="context"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private Any Graph(InvokeRequest request, ServerCallContext context)
+        private async Task<Any> GraphAsync(InvokeRequest request, ServerCallContext context)
         {
             AriesJsonObjResp output = new AriesJsonObjResp();
             if (request.Data.TryUnpack<GraphDegreeReq>(out GraphDegreeReq graphReq))
             {
-                var temp = handler!.Graph(graphReq);
+                var temp = await handler!.GraphAsync(graphReq);
                 if (temp.Result is not null)
                 {
                     temp.Result.Labels = QueryHandler.GetAllLabelList();
@@ -46,12 +72,12 @@ namespace aries.galaxy.query
         /// <param name="context"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private Any ShortestPath(InvokeRequest request, ServerCallContext context)
+        private async Task<Any> ShortestPathAsync(InvokeRequest request, ServerCallContext context)
         {
             AriesJsonObjResp output = new AriesJsonObjResp();
             if (request.Data.TryUnpack<ShortestPathReq>(out ShortestPathReq graphReq))
             {
-                var temp = handler.ShortestPath(new RelationSearchInfo<NullGraphEntityInfo, NullGraphEntityInfo>()
+                var temp =await handler.ShortestPathAsync(new RelationSearchInfo<NullGraphEntityInfo, NullGraphEntityInfo>()
                 {
                     StartNode = new NullGraphEntityInfo(),
                     EndNode = new NullGraphEntityInfo(),

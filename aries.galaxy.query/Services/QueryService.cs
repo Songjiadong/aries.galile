@@ -41,15 +41,16 @@ namespace aries.galaxy.query
                 throw new NullReferenceException("QueryHandler≥ı ºªØ ß∞‹...");
             }
         }
-        public override Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)
+        public override async Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)
         {
             var response = new InvokeResponse();
             try
             {
                 response.Data = request.Method switch
                 {
-                    "Galaxy$Query$Graph" => Graph(request, context),
-                    "Galaxy$Query$ShortestPath" => ShortestPath(request, context),
+                    "Galaxy$Query$Graph" => await GraphAsync(request, context),
+                    "Galaxy$Query$ShortestPath" => await ShortestPathAsync(request, context),
+                    "Galaxy$Query$AutoComplete"=> await AutoCompleteAsync(request,context),
                     _ => throw new NotSupportedException($"this {request.Method} is not supported."),
                 };
             }
@@ -57,7 +58,7 @@ namespace aries.galaxy.query
             {
                 LoggerService.Logger<QueryService>(ex, LogLevel.Error);
             }
-            return Task.FromResult(response);
+            return response;
         }
 
     }
