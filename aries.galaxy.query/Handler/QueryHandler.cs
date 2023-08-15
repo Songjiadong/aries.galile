@@ -11,53 +11,34 @@ namespace aries.galaxy.query
 {
     public class QueryHandler : IQueryHandler
     {
-        private readonly AriesNeo4j.DBService neo4jClient;
-        private readonly AriesEs.DBService esClient;
-        public QueryHandler(AriesEs.DBService esClient, AriesNeo4j.DBService neo4jClient)
+        private readonly AriesNeo4j.DBService client;
+        public QueryHandler(AriesNeo4j.DBService neo4jClient)
         {
-            this.esClient = esClient;
-            this.neo4jClient = neo4jClient;
+            this.client = neo4jClient;
         }
 
-        public List<OrganizationDocInfo> AutoComplete(GraphSearchReq request)
-        {
-            List<OrganizationDocInfo> result = new List<OrganizationDocInfo>();
-            //var response = esClient.Search<OrganizationDocInfo>(s => s
-            //                             .Query(q => q.Bool(selector => selector
-            //                                                .Must(queries => queries.Match(m => m.Query(request.Keyword).Field(f => f.Name)))))
-            //                             .Highlight(h => h
-            //                               .PreTags("<span style='color:red;'>")
-            //                               .PostTags("</span>")
-            //                               .FragmentSize(100)
-            //                               .NoMatchSize(150)
-            //                               .Fields(
-            //                                   fs => fs
-            //                                       .Field(p => p.Name)
-            //                               )
-            //                             )
-            //                         );
-            //var hits = response.HitsMetadata.Hits;
-            //foreach (var item in hits)
-            //{
-            //    result.Add(item.Source);
-            //}
-            return result;
-        }
-
-        public AriesObject<GraphInfo> Search(GraphDegreeSearchReq request)
+        public AriesObject<GraphInfo> Graph(GraphDegreeReq request)
         {
             AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
             List<ConditionComponent> conditions = new List<ConditionComponent>();
-            Condition sourceCond = new Condition("source", "name", request.Keyword!, DbType.String, DBOperatorEnum.Like);
+            Condition sourceCond = new Condition("source",
+                DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Id),
+                request.Id!,
+                DbType.String,
+                DBOperatorEnum.Equal);
             ConditionLeaf sourceLeaf = new NoConditionLeaf(sourceCond);
             conditions.Add(sourceLeaf);
-            Condition targetCond = new Condition("target", "name", request.Keyword!, DbType.String, DBOperatorEnum.Like);
+            Condition targetCond = new Condition("target",
+                DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Id),
+                request.Id!,
+                DbType.String,
+                DBOperatorEnum.Equal);
             ConditionLeaf targetLeaf = new OrConditionLeaf(targetCond);
             conditions.Add(targetLeaf);
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result = neo4jClient.Graph(whereCond: cond, request.Degree);
+                result = client.Graph(whereCond: cond, request.Degree);
             }
             catch (Exception ex)
             {
@@ -70,16 +51,24 @@ namespace aries.galaxy.query
         {
             AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
             List<ConditionComponent> conditions = new List<ConditionComponent>();
-            Condition sourceCond = new Condition("start", DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), request.FromKeyword!, DbType.String, DBOperatorEnum.Like);
+            Condition sourceCond = new Condition("start", 
+                DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), 
+                request.FromKeyword!,
+                DbType.String,
+                DBOperatorEnum.Like);
             ConditionLeaf sourceLeaf = new NoConditionLeaf(sourceCond);
             conditions.Add(sourceLeaf);
-            Condition targetCond = new Condition("end", DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), request.ToKeyword!, DbType.String, DBOperatorEnum.Like);
+            Condition targetCond = new Condition("end", 
+                DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name),
+                request.ToKeyword!,
+                DbType.String, 
+                DBOperatorEnum.Like);
             ConditionLeaf targetLeaf = new AndConditionLeaf(targetCond);
             conditions.Add(targetLeaf);
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result = neo4jClient.ShortestPath<From, To>(request.StartNode!, request.EndNode!, cond);
+                result = client.ShortestPath<From, To>(request.StartNode!, request.EndNode!, cond);
             }
             catch (Exception ex)
             {

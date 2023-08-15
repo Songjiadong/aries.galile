@@ -18,12 +18,12 @@ namespace aries.galaxy.query
         /// <param name="context"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private Any Search(InvokeRequest request, ServerCallContext context)
+        private Any Graph(InvokeRequest request, ServerCallContext context)
         {
             AriesJsonObjResp output = new AriesJsonObjResp();
-            if (request.Data.TryUnpack<GraphDegreeSearchReq>(out GraphDegreeSearchReq searchReq))
+            if (request.Data.TryUnpack<GraphDegreeReq>(out GraphDegreeReq graphReq))
             {
-                var temp = handler!.Search(searchReq);
+                var temp = handler!.Graph(graphReq);
                 if (temp.Result is not null)
                 {
                     temp.Result.Labels = QueryHandler.GetAllLabelList();
@@ -77,29 +77,6 @@ namespace aries.galaxy.query
             }
             return Any.Pack(output);
         }
-        /// <summary>
-        /// 搜索提示操作
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private Any AutoComplete(InvokeRequest request, ServerCallContext context) 
-        {
-            AriesJsonObjResp output = new AriesJsonObjResp();
-            if (request.Data.TryUnpack<GraphSearchReq>(out GraphSearchReq graphReq))
-            {
-                var temp = handler.AutoComplete(graphReq);
-                if (temp.Count>0)
-                {
-                    output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
-                }
-            }
-            else
-            {
-                throw new Exception();
-            }
-            return Any.Pack(output);
-        }
+       
     }
 }

@@ -10,7 +10,7 @@ services:
     volumes:
        - D:/Source/Repos/aries.galile/certs/https:/https:ro
   
-  aries.galile.query:
+  aries.galileo.query:
       environment:
           - ASPNETCORE_ENVIRONMENT=Development
           - ASPNETCORE_URLS=https://+:6666

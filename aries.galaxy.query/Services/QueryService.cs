@@ -14,84 +14,44 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using aries.common.db;
 using System.Net;
+using aries.common;
 
 namespace aries.galaxy.query
 {
     public partial class QueryService : AppCallback.AppCallbackBase
     {
         private readonly IQueryHandler handler;
-        private readonly IConfiguration configuration;
         public QueryService(IConfiguration configuration)
         {
             AriesNeo4j.DBService? neo4jClient = null;
-            AriesEs.DBService? esClient = null;
-            this.configuration = configuration;
+            ConfigService<QueryService> configService = new ConfigService<QueryService>(configuration);
             //1初始化neo4j
-
-            Neo4jConfigOptions  neo4jOps = ApolloPull<Neo4jConfigOptions>("neo4j")!;
-            neo4jClient=ClientInit(() =>
+            Neo4jConfigOptions  neo4jOps = configService.ApolloPull<Neo4jConfigOptions>("neo4j")!;
+            neo4jClient= configService.ClientInit(() =>
             {
                  return new AriesNeo4j.DBService(new AriesNeo4j.DBOpService<QueryService>(neo4jOps));
             });
-            //2初始化elasticsearch
-            EsConfigOptions esOps = ApolloPull<EsConfigOptions>("elasticsearch")!; 
-            esClient = ClientInit(() =>
+          
+            if (neo4jClient is not null)
             {
-                return new AriesEs.DBService(new AriesEs.DBOpService<QueryService>(esOps));
-            });
-            if (neo4jClient is not null && esClient is not null)
-            {
-                handler = new QueryHandler(esClient, neo4jClient);
+                handler = new QueryHandler(neo4jClient);
             }
             else 
             {
                 throw new NullReferenceException("QueryHandler初始化失败...");
             }
         }
-        private TService? ClientInit<TService>(Func<TService>initFunc) 
-        {
-            TService? result=default;
-            try
-            {
-                result= initFunc.Invoke();
-                
-
-            }
-            catch (Exception ex)
-            {
-                LoggerService.Logger<QueryService>(ex, LogLevel.Error);
-            }
-            return result;
-        }
-        private TConfigOptions? ApolloPull<TConfigOptions>(string sectionName) where TConfigOptions : ConfigOptions
-        {
-            TConfigOptions? ops=default;
-            configuration.GetSection(sectionName).Bind(ops);
-            if (ops!.Setted == false)
-            {
-                throw new Exception($"Apollo配置中心拉取{sectionName}数据失败,请联系管理员....");
-            }
-            return ops;
-        }
         public override Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)
         {
             var response = new InvokeResponse();
             try
             {
-                switch (request.Method)
+                response.Data = request.Method switch
                 {
-                    case "Galaxy$Query$Search":
-                        response.Data = Search(request, context);
-                        break;
-                    case "Galaxy$Query$ShortestPath":
-                        response.Data = ShortestPath(request, context);
-                        break;
-                    case "Galaxy$Query$AutoComplete":
-                        response.Data = AutoComplete(request, context);
-                        break;
-                    default:
-                        throw new NotSupportedException($"this {request.Method} is not supported.");
-                }
+                    "Galaxy$Query$Graph" => Graph(request, context),
+                    "Galaxy$Query$ShortestPath" => ShortestPath(request, context),
+                    _ => throw new NotSupportedException($"this {request.Method} is not supported."),
+                };
             }
             catch (Exception ex)
             {
