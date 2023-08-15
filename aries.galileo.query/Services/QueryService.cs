@@ -28,6 +28,10 @@ namespace aries.galileo.query
             {
                 return new AriesEs.DBService(new AriesEs.DBOpService<QueryService>(esOps));
             });
+            if (esClient is null) 
+            {
+                throw new NullReferenceException(nameof(esClient));
+            }
             handler = new QueryHandler(esClient);
             ////3初始化phoenix
             //PhoenixConfigOptions phoenixOps = ApolloPull<PhoenixConfigOptions>("phoenix")!;

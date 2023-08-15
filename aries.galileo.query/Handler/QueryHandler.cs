@@ -96,6 +96,7 @@ namespace aries.galileo.query
                 Keyword = new EsKeywordQueryInfo()
                 {
                     Keyword = request.Keyword,
+                    Analyzer= "ik_sync_smart",
                     KeywordFieldList = keywordFieldList,
                     PhraseFieldList = phraseFieldList,
                     Boost = request.Boost,

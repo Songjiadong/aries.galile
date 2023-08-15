@@ -82,7 +82,7 @@ services:
  
    aries.galileo.query.dapr:
      image: "harbor.aries.com.cn/daprio/daprd:latest"
-     command: [ "./daprd", "--app-id", "GalileQueryService", "--app-port", "6666","--app-protocol","grpc","--dapr-grpc-port","50001","--app-ssl","--config","/dapr/config.yaml" ,"--metrics-port","9090" ]
+     command: [ "./daprd", "--app-id", "GalileoQueryService", "--app-port", "6666","--app-protocol","grpc","--dapr-grpc-port","50001","--app-ssl","--config","/dapr/config.yaml" ,"--metrics-port","9090" ]
      depends_on:
         - aries.galileo.query
      restart: always
