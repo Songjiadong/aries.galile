@@ -2,7 +2,7 @@
 using aries.common.logger;
 using Dapr;
 using Microsoft.AspNetCore.Mvc;
-using AriesGalileGrpc = aries.galileo.grpc;
+using AriesGalileoGrpc = aries.galileo.grpc;
 using AriesCollectorGrpc = aries.collector.grpc;
 using aries.service.galileo.Views.request;
 using aries.common;
@@ -20,31 +20,31 @@ namespace aries.service.Controllers
         public async Task<ActionResult> Search(SearchReq searchReq)
         {
             ActionResult result;
-            AriesGalileGrpc.SearchReq req = searchReq.Convert();
+            AriesGalileoGrpc.SearchReq req = searchReq.Convert();
             req.Boost = 1;
             req.PhraseSlop = 1;
-            List<AriesGalileGrpc.EsQueryItemField> keywordFields = new List<AriesGalileGrpc.EsQueryItemField>()
+            List<AriesGalileoGrpc.EsQueryItemField> keywordFields = new List<AriesGalileoGrpc.EsQueryItemField>()
             { 
                 //资讯标题
-                new AriesGalileGrpc.EsQueryItemField { Boost=10,Item="Title"},
+                new AriesGalileoGrpc.EsQueryItemField { Boost=10,Item="Title"},
                 //机构名称
-                new AriesGalileGrpc.EsQueryItemField{ Boost=10,Item="Name"},
+                new AriesGalileoGrpc.EsQueryItemField{ Boost=10,Item="Name"},
 
             };
             req.KeywordFields.AddRange(keywordFields);
-            List<AriesGalileGrpc.EsQueryItemField> phraseFields = new List<AriesGalileGrpc.EsQueryItemField>()
+            List<AriesGalileoGrpc.EsQueryItemField> phraseFields = new List<AriesGalileoGrpc.EsQueryItemField>()
             {
                 //资讯摘要
-                new AriesGalileGrpc.EsQueryItemField{ Boost=2,Item ="Abstract"},
+                new AriesGalileoGrpc.EsQueryItemField{ Boost=2,Item ="Abstract"},
                 //资讯正文
-                new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Content"},
+                new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Content"},
                 //机构介绍
-                new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
+                new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
             req.PhraseFields.AddRange(phraseFields);
             try
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
+                var temp = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
                 result = Ok(temp);
             }
             catch (DaprApiException ex)
@@ -70,43 +70,43 @@ namespace aries.service.Controllers
         public async Task<ActionResult> SearchByIndex(SearchByIndexReq searchReq)
         {
             ActionResult result;
-            AriesGalileGrpc.SearchByIndexReq req = searchReq.Convert();
+            AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
             req.Boost = 1;
             req.PhraseSlop = 1;
-            List<AriesGalileGrpc.EsQueryItemField> keywordFields = searchReq.Index switch
+            List<AriesGalileoGrpc.EsQueryItemField> keywordFields = searchReq.Index switch
             {
-                "organization" => new List<AriesGalileGrpc.EsQueryItemField>()
+                "organization" => new List<AriesGalileoGrpc.EsQueryItemField>()
                 { 
                     //机构名称
-                    new AriesGalileGrpc.EsQueryItemField{ Boost=10,Item="Name"},
+                    new AriesGalileoGrpc.EsQueryItemField{ Boost=10,Item="Name"},
                 },
-                _ => new List<AriesGalileGrpc.EsQueryItemField>()
+                _ => new List<AriesGalileoGrpc.EsQueryItemField>()
                 {
                      //资讯标题
-                    new AriesGalileGrpc.EsQueryItemField { Boost=10,Item="Title"},
+                    new AriesGalileoGrpc.EsQueryItemField { Boost=10,Item="Title"},
                 }
             };
             req.KeywordFields.AddRange(keywordFields);
-            List<AriesGalileGrpc.EsQueryItemField> phraseFields = searchReq.Index switch
+            List<AriesGalileoGrpc.EsQueryItemField> phraseFields = searchReq.Index switch
             {
-                "organization" => new List<AriesGalileGrpc.EsQueryItemField>()
+                "organization" => new List<AriesGalileoGrpc.EsQueryItemField>()
                {
                    //机构介绍
-                   new AriesGalileGrpc.EsQueryItemField { Boost = 1, Item = "Introduction" }
+                   new AriesGalileoGrpc.EsQueryItemField { Boost = 1, Item = "Introduction" }
                },
-                _ => new List<AriesGalileGrpc.EsQueryItemField>()
+                _ => new List<AriesGalileoGrpc.EsQueryItemField>()
                {
                      //资讯摘要
-                    new AriesGalileGrpc.EsQueryItemField{ Boost=2,Item ="Abstract"},
+                    new AriesGalileoGrpc.EsQueryItemField{ Boost=2,Item ="Abstract"},
                     //资讯正文
-                    new AriesGalileGrpc.EsQueryItemField{ Boost=1,Item="Content"},
+                    new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Content"},
                }
 
             };
             req.PhraseFields.AddRange(phraseFields);
             try
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
+                var temp = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
                 result = Ok(temp);
             }
             catch (DaprApiException ex)
@@ -163,13 +163,13 @@ namespace aries.service.Controllers
         public async Task<ActionResult> GetTopList(int topNum)
         {
             ActionResult result;
-            AriesGalileGrpc.TopReq req = new AriesGalileGrpc.TopReq()
+            AriesGalileoGrpc.TopReq req = new AriesGalileoGrpc.TopReq()
             {
                 Top = topNum
             };
             try
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
+                var temp = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
                 result = Ok(temp);
             }
             catch (DaprApiException ex)

@@ -29,7 +29,4 @@
    <Protobuf Include="..\aries.proto\galileo\galileo.proto" GrpcServices="Client" Link="Protos\galileo.proto" ProtoRoot="..\aries.proto\" />
     <Protobuf Include="..\aries.proto\collector\collector.proto" GrpcServices="Client" Link="Protos\collector.proto" ProtoRoot="..\aries.proto\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\request\galaxy\" />
-  </ItemGroup>
 </Project>
