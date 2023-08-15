@@ -16,8 +16,21 @@ namespace aries.galaxy.query
         {
             this.client = neo4jClient;
         }
-
-        public AriesObject<GraphInfo> Graph(GraphDegreeReq request)
+        public async Task<AriesDataTable> AutoCompleteAsync(SearchInfo searchInfo)
+        {
+            AriesDataTable result = new AriesDataTable();
+            List<ConditionComponent> listCond = new List<ConditionComponent>();
+            Condition keywordCond = new Condition(DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), searchInfo.Keyword!, DbType.String, DBOperatorEnum.Like);
+            ConditionLeaf keyLeaf = new NoConditionLeaf(keywordCond);
+            listCond.Add(keyLeaf);
+            ColumnInfo columnInfo = new ColumnInfo();
+            columnInfo.Items.Add(new Item() { Prefix = false, Name = "labels(item) as label" });
+            columnInfo.Items.Add(new Item { Name = DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Id), Prefix = true });
+            columnInfo.Items.Add(new Item { Name = DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), Prefix = true });
+            result = await client.GetInfosAsync<NullGraphEntityInfo>(new NullTopFunc(), columnInfo, propertiesCond: new NullGraphEntityInfo(), whereCond: new NoConditionComposite(listCond));
+            return result;
+        }
+        public async Task<AriesObject<GraphInfo>> GraphAsync(GraphDegreeReq request)
         {
             AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
             List<ConditionComponent> conditions = new List<ConditionComponent>();
@@ -38,7 +51,7 @@ namespace aries.galaxy.query
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result = client.Graph(whereCond: cond, request.Degree);
+                result = await client.GraphAsync(whereCond: cond, request.Degree);
             }
             catch (Exception ex)
             {
@@ -47,7 +60,7 @@ namespace aries.galaxy.query
             return result;
         }
 
-        public AriesObject<GraphInfo> ShortestPath<From, To>(RelationSearchInfo<From, To> request) where From : GGraphEntityInfo where To : GGraphEntityInfo
+        public async Task<AriesObject<GraphInfo>> ShortestPathAsync<From, To>(RelationSearchInfo<From, To> request) where From : GGraphEntityInfo where To : GGraphEntityInfo
         {
             AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
             List<ConditionComponent> conditions = new List<ConditionComponent>();
@@ -68,7 +81,7 @@ namespace aries.galaxy.query
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result = client.ShortestPath<From, To>(request.StartNode!, request.EndNode!, cond);
+                result =await client.ShortestPathAsync<From, To>(request.StartNode!, request.EndNode!, cond);
             }
             catch (Exception ex)
             {
