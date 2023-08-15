@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.56.0-pre1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Com.Ctrip.Framework.Apollo" Version="2.10.0" />
-    <PackageReference Include="Com.Ctrip.Framework.Apollo.Configuration" Version="2.10.1" />
+    <PackageReference Include="Com.Ctrip.Framework.Apollo.Configuration" Version="2.10.2" />
     <PackageReference Include="Dapr.AspNetCore" Version="1.11.0" />
     <PackageReference Include="Dapr.Extensions.Configuration" Version="1.11.0" />
   </ItemGroup>

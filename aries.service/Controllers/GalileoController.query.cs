@@ -8,7 +8,7 @@ using aries.service.galileo.Views.request;
 using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
-using aries.common.db;
+
 
 namespace aries.service.Controllers
 {
@@ -42,26 +42,10 @@ namespace aries.service.Controllers
                 new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
             req.PhraseFields.AddRange(phraseFields);
-            try
+            result = await TryCatch<GalileoController, AriesJsonObjResp>(async action =>
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
-                result = Ok(temp);
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
+                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
+            });
             return result;
         }
         [HttpPost("searchByIndex")]
@@ -104,26 +88,10 @@ namespace aries.service.Controllers
 
             };
             req.PhraseFields.AddRange(phraseFields);
-            try
+            result = await TryCatch<GalileoController, AriesJsonObjResp>(async action =>
             {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
-                result = Ok(temp);
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
+                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
+            });
             return result;
         }
         [HttpPut("browse")]
@@ -167,27 +135,13 @@ namespace aries.service.Controllers
             {
                 Top = topNum
             };
-            try
-            {
-                var temp = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
-                result = Ok(temp);
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
+            result = await TryCatch<GalileoController, AriesJsonObjResp>(async action =>
+             {
+                 await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
+             });
             return result;
+           
         }
+       
     }
 }
