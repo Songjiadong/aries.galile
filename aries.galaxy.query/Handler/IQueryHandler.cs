@@ -11,7 +11,7 @@ namespace aries.galaxy.query
         /// </summary>
         /// <param name="request">request</param>
         /// <returns>查询数据集</returns>
-        AriesObject<GraphInfo> Search(GraphDegreeSearchReq request);
+        AriesObject<GraphInfo> Graph(GraphDegreeReq request);
         /// <summary>
         /// 查询最近距离操作
         /// </summary>

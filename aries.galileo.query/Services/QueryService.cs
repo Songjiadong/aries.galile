@@ -49,20 +49,13 @@ namespace aries.galileo.query
             var response = new InvokeResponse();
             try
             {
-                switch (request.Method)
+                response.Data = request.Method switch
                 {
-                    case "Galileo$Query$Search":
-                        response.Data =await SearchAsync(request, context);
-                        break;
-                    case "Galileo$Query$SearchByIndex":
-                        response.Data = await SearchByIndexAsync(request, context);
-                        break;
-                    case "Galileo$Query$GetTopList":
-                        response.Data =await GetTopListAsync(request, context);
-                        break;
-                    default:
-                        throw new NotSupportedException($"this {request.Method} is not supported.");
-                }
+                    "Galileo$Query$Search" => await SearchAsync(request, context),
+                    "Galileo$Query$SearchByIndex" => await SearchByIndexAsync(request, context),
+                    "Galileo$Query$GetTopList" => await GetTopListAsync(request, context),
+                    _ => throw new NotSupportedException($"this {request.Method} is not supported."),
+                };
             }
             catch (Exception ex)
             {

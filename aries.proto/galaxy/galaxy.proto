@@ -49,6 +49,10 @@ message GraphDegreeSearchReq{
   google.protobuf.StringValue Keyword=1;
   int32 Degree=2;
 }
+message GraphDegreeReq{
+  google.protobuf.StringValue Id=1;
+  int32 Degree=2;
+}
 //Õº≤È—Ø«Î«Û
 message GraphSearchReq{
   google.protobuf.StringValue Keyword=1;

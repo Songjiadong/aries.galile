@@ -46,17 +46,12 @@ namespace aries.galaxy.query
             var response = new InvokeResponse();
             try
             {
-                switch (request.Method)
+                response.Data = request.Method switch
                 {
-                    case "Galaxy$Query$Search":
-                        response.Data = Search(request, context);
-                        break;
-                    case "Galaxy$Query$ShortestPath":
-                        response.Data = ShortestPath(request, context);
-                        break;
-                    default:
-                        throw new NotSupportedException($"this {request.Method} is not supported.");
-                }
+                    "Galaxy$Query$Graph" => Graph(request, context),
+                    "Galaxy$Query$ShortestPath" => ShortestPath(request, context),
+                    _ => throw new NotSupportedException($"this {request.Method} is not supported."),
+                };
             }
             catch (Exception ex)
             {
