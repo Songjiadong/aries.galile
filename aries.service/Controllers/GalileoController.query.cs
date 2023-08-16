@@ -17,7 +17,7 @@ namespace aries.service.Controllers
         [HttpPost("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Search(SearchReq searchReq)
+        public  ActionResult Search(SearchReq searchReq)
         {
             ActionResult result;
             AriesGalileoGrpc.SearchReq req = searchReq.Convert();
@@ -42,16 +42,16 @@ namespace aries.service.Controllers
                 new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
             req.PhraseFields.AddRange(phraseFields);
-            result = await TryCatch<GalileoController, AriesJsonListResp>(async action =>
+            result =  TryCatch<GalileoController, AriesJsonListResp>(async action =>
             {
-                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$Search", req);
+                action = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$Search", req);
             });
             return result;
         }
         [HttpPost("searchByIndex")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> SearchByIndex(SearchByIndexReq searchReq)
+        public ActionResult SearchByIndex(SearchByIndexReq searchReq)
         {
             ActionResult result;
             AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
@@ -88,9 +88,9 @@ namespace aries.service.Controllers
 
             };
             req.PhraseFields.AddRange(phraseFields);
-            result = await TryCatch<GalileoController, AriesJsonListResp>(async action =>
+            result =  TryCatch<GalileoController, AriesJsonListResp>(async action =>
             {
-                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
+                action = await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
             });
             return result;
         }
@@ -135,7 +135,7 @@ namespace aries.service.Controllers
             {
                 Top = topNum
             };
-            result = await TryCatch<GalileoController, AriesJsonObjResp>(async action =>
+            result =  TryCatch<GalileoController, AriesJsonObjResp>(async action =>
              {
                  await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
              });
