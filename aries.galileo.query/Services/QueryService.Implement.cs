@@ -18,11 +18,11 @@ namespace aries.galileo.query
         /// <returns></returns>
         private async Task<Any> SearchAsync(InvokeRequest request, ServerCallContext context)
         {
-            AriesJsonObjResp output = new AriesJsonObjResp();
+            AriesJsonListResp output = new AriesJsonListResp();
             if (request.Data.TryUnpack(out SearchReq searchReq))
             {
                 var temp = await handler!.SearchAsync(searchReq);
-                output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions); 
+                output.JsonList=temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
             }
             return Any.Pack(output);
         }
@@ -34,11 +34,11 @@ namespace aries.galileo.query
         /// <returns></returns>
         private async Task<Any> SearchByIndexAsync(InvokeRequest request, ServerCallContext context)
         {
-            AriesJsonObjResp output = new AriesJsonObjResp();
+            AriesJsonListResp output = new AriesJsonListResp();
             if (request.Data.TryUnpack(out SearchByIndexReq searchReq))
             {
                 var temp = await handler!.SearchByIndexAsync(searchReq);
-                output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                output.JsonList = temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
             }
             return Any.Pack(output);
         }
