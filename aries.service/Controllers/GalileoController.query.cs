@@ -42,9 +42,9 @@ namespace aries.service.Controllers
                 new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
             req.PhraseFields.AddRange(phraseFields);
-            result = await TryCatch<GalileoController, AriesJsonObjResp>(async action =>
+            result = await TryCatch<GalileoController, AriesJsonListResp>(async action =>
             {
-                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
+                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$Search", req);
             });
             return result;
         }
@@ -88,9 +88,9 @@ namespace aries.service.Controllers
 
             };
             req.PhraseFields.AddRange(phraseFields);
-            result = await TryCatch<GalileoController, AriesJsonObjResp>(async action =>
+            result = await TryCatch<GalileoController, AriesJsonListResp>(async action =>
             {
-                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
+                await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
             });
             return result;
         }

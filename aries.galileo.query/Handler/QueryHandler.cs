@@ -7,6 +7,7 @@ using aries.common.db;
 using aries.common;
 using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
+using System.Text.Json;
 
 namespace aries.galileo.query
 {
@@ -20,9 +21,9 @@ namespace aries.galileo.query
             this.esClient = esClient;
             // this.phoenixClient = phoenixClient;
         }
-        public async Task<AriesList<SearchItemInfo>> SearchByIndexAsync(SearchByIndexReq request) 
+        public async Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq request) 
         {
-            AriesList<SearchItemInfo> result = new AriesList<SearchItemInfo> { };
+            AriesObject<JsonArray> result = new AriesObject<JsonArray>();
             List<string> keywordFieldList = new List<string>();
             foreach (var item in request.KeywordFields)
             {
@@ -58,8 +59,11 @@ namespace aries.galileo.query
             };
             try
             {
-                EsSearchResponse<JsonObject> resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
-                //转化
+                var resp = await this.esClient.SearchOp.SearchAsync<dynamic>(req);
+                if (resp is not null && resp.IsValid == true)
+                {
+                    result.Result = JsonSerializer.SerializeToNode(resp!.Documents, CommonSource.JsonDefaultOptions);
+                }
             }
             catch (Exception ex)
             {
@@ -67,9 +71,9 @@ namespace aries.galileo.query
             }
             return result;
         }
-        public async Task<AriesList<SearchItemInfo>> SearchAsync(SearchReq request)
+        public async Task<AriesObject<JsonArray>> SearchAsync(SearchReq request)
         {
-            AriesList<SearchItemInfo> result = new AriesList<SearchItemInfo> { };
+            AriesObject<JsonArray> result= new AriesObject<JsonArray>();
             List<string> keywordFieldList = new List<string>();
             foreach (var item in request.KeywordFields)
             {
@@ -105,8 +109,13 @@ namespace aries.galileo.query
             };
             try
             {
-              EsSearchResponse<JsonObject> resp=  await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
-              //转化
+
+              var resp =  await this.esClient.SearchOp.SearchAsync<dynamic>(req);
+                if (resp is not null && resp.IsValid == true)
+                {
+                    result.Result = JsonSerializer.SerializeToNode(resp!.Documents, CommonSource.JsonDefaultOptions);
+                }
+               
             }
             catch (Exception ex)
             {
@@ -133,7 +142,7 @@ namespace aries.galileo.query
                      }
 
                 };
-                EsSearchResponse<JsonObject> resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
+                JsonDocument? resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
                 //转化
             }
             catch (Exception ex)
