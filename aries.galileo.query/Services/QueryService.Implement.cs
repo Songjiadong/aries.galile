@@ -23,6 +23,14 @@ namespace aries.galileo.query
             {
                 var temp = await handler!.SearchAsync(searchReq);
                 output.JsonList=temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message)) 
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode="",
+                        ErrMsg=temp.Message
+                    };
+                }
             }
             return Any.Pack(output);
         }
@@ -39,6 +47,14 @@ namespace aries.galileo.query
             {
                 var temp = await handler!.SearchByIndexAsync(searchReq);
                 output.JsonList = temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message))
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode = "",
+                        ErrMsg = temp.Message
+                    };
+                }
             }
             return Any.Pack(output);
         }
@@ -55,6 +71,14 @@ namespace aries.galileo.query
             {
                 var temp =await handler!.GetTopListAsync(topReq);
                 output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message))
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode = "",
+                        ErrMsg = temp.Message
+                    };
+                }
             }
             return Any.Pack(output);
         }
