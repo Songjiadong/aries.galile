@@ -42,6 +42,11 @@ namespace aries.service.Controllers
                 new AriesGalileoGrpc.EsQueryItemField{ Boost=1,Item="Introduction"}
             };
             req.PhraseFields.AddRange(phraseFields);
+            List<string> highlightFields = new()
+            {
+                "Title","Name","Abstract","Introduction"
+            };
+            req.HighlightFields.AddRange(highlightFields);
             result =  Search<GalileoController, AriesJsonListResp>( async () => {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$Search", req);
                 });
@@ -87,12 +92,78 @@ namespace aries.service.Controllers
 
             };
             req.PhraseFields.AddRange(phraseFields);
+            List<string> highlightFields = searchReq.Index switch
+            {
+                "organization" => new List<string>()
+               {     
+                   //机构名称
+                    "Name",
+                   //机构介绍
+                   "Introduction",
+
+               },
+                _ => new List<string>()
+               {
+                    //资讯标题
+                    "Title",
+                     //资讯摘要
+                    "Abstract",
+
+               }
+            };
+            req.HighlightFields.AddRange(highlightFields);
             result = Search<GalileoController, AriesJsonListResp>(async () =>
             {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
             });
             return result;
         }
+        [HttpPost("autocomplete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult AutoComplete(SuggesterReq suggesterReq) 
+        {
+            ActionResult result;
+            AriesGalileoGrpc.SuggesterReq req = suggesterReq.Convert();
+   
+            result = Search<GalileoController, AriesJsonListResp>(async () => {
+                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoComplete", req);
+            });
+            return result;
+        }
+        [HttpPost("autocomplete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult AutoCompleteByIndex(SearchByIndexReq searchReq)
+        {
+            ActionResult result;
+            AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
+            req.Boost = 1;
+            //req.PhraseSlop = 1;
+           
+            List<AriesGalileoGrpc.EsQueryItemField> phraseFields = searchReq.Index switch
+            {
+
+                "organization" => new List<AriesGalileoGrpc.EsQueryItemField>()
+                { 
+                    //机构名称
+                    new AriesGalileoGrpc.EsQueryItemField{ Boost=10,Item="Name"},
+                },
+                _ => new List<AriesGalileoGrpc.EsQueryItemField>()
+                {
+                     //资讯标题
+                    new AriesGalileoGrpc.EsQueryItemField { Boost=10,Item="Title"},
+                }
+
+            };
+            req.PhraseFields.AddRange(phraseFields);
+            result = Search<GalileoController, AriesJsonListResp>(async () =>
+            {
+                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoCompleteByIndex", req);
+            });
+            return result;
+        }
+
         [HttpPut("browse")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
