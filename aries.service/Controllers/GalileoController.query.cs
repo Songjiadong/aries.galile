@@ -125,41 +125,26 @@ namespace aries.service.Controllers
         {
             ActionResult result;
             AriesGalileoGrpc.SuggesterReq req = suggesterReq.Convert();
-   
+            req.Field = "suggester";
+            req.Name = "galileo-suggester";
+            req.Size = 10;
             result = Search<GalileoController, AriesJsonListResp>(async () => {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoComplete", req);
             });
             return result;
         }
-        [HttpPost("autocomplete")]
+        [HttpPost("autocompleteByIndex")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult AutoCompleteByIndex(SearchByIndexReq searchReq)
+        public ActionResult AutoCompleteByIndex(SuggesterByIndexReq suggesterReq)
         {
             ActionResult result;
-            AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
-            req.Boost = 1;
-            //req.PhraseSlop = 1;
-           
-            List<AriesGalileoGrpc.EsQueryItemField> phraseFields = searchReq.Index switch
-            {
-
-                "organization" => new List<AriesGalileoGrpc.EsQueryItemField>()
-                { 
-                    //机构名称
-                    new AriesGalileoGrpc.EsQueryItemField{ Boost=10,Item="Name"},
-                },
-                _ => new List<AriesGalileoGrpc.EsQueryItemField>()
-                {
-                     //资讯标题
-                    new AriesGalileoGrpc.EsQueryItemField { Boost=10,Item="Title"},
-                }
-
-            };
-            req.PhraseFields.AddRange(phraseFields);
-            result = Search<GalileoController, AriesJsonListResp>(async () =>
-            {
-                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoCompleteByIndex", req);
+            AriesGalileoGrpc.SuggesterReq req = suggesterReq.Convert();
+            req.Field = "suggester";
+            req.Name = "galileo-suggester";
+            req.Size = 10;
+            result = Search<GalileoController, AriesJsonListResp>(async () => {
+                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoComplete", req);
             });
             return result;
         }

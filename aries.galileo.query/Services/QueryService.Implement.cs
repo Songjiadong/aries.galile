@@ -59,24 +59,7 @@ namespace aries.galileo.query
             
             return Any.Pack(output);
         }
-        private async Task<Any> AutoCompleteByIndexAsync(InvokeRequest request, ServerCallContext context)
-        {
-            AriesJsonListResp output = new AriesJsonListResp();
-            if (request.Data.TryUnpack(out SearchByIndexReq searchReq))
-            {
-                var temp = await handler!.AutoCompleteByIndexAsync(searchReq);
-                output.JsonList = temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
-                if (!string.IsNullOrEmpty(temp.Message))
-                {
-                    output.Error = new AriesErr()
-                    {
-                        ErrCode = "",
-                        ErrMsg = temp.Message
-                    };
-                }
-            }
-            return Any.Pack(output);
-        }
+      
         private async Task<Any> AutoCompleteAsync(InvokeRequest request, ServerCallContext context)
         {
             AriesJsonListResp output = new AriesJsonListResp();
