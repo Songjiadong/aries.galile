@@ -171,10 +171,8 @@ namespace aries.galileo.query
                 }
             };
             try
-            {
-              
+            { 
                 result.Result = await this.esClient.SearchOp.SuggesterAsync<dynamic>(req);
-
 
             }
             catch (Exception ex)
