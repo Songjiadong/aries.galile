@@ -18,11 +18,19 @@ namespace aries.galileo.query
         /// <returns></returns>
         private async Task<Any> SearchAsync(InvokeRequest request, ServerCallContext context)
         {
-            AriesJsonObjResp output = new AriesJsonObjResp();
+            AriesJsonListResp output = new AriesJsonListResp();
             if (request.Data.TryUnpack(out SearchReq searchReq))
             {
                 var temp = await handler!.SearchAsync(searchReq);
-                output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions); 
+                output.JsonList=temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message)) 
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode="",
+                        ErrMsg=temp.Message
+                    };
+                }
             }
             return Any.Pack(output);
         }
@@ -34,11 +42,56 @@ namespace aries.galileo.query
         /// <returns></returns>
         private async Task<Any> SearchByIndexAsync(InvokeRequest request, ServerCallContext context)
         {
-            AriesJsonObjResp output = new AriesJsonObjResp();
+            AriesJsonListResp output = new AriesJsonListResp();
             if (request.Data.TryUnpack(out SearchByIndexReq searchReq))
             {
                 var temp = await handler!.SearchByIndexAsync(searchReq);
-                output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                output.JsonList = temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message))
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode = "",
+                        ErrMsg = temp.Message
+                    };
+                }
+            }
+            
+            return Any.Pack(output);
+        }
+        private async Task<Any> AutoCompleteByIndexAsync(InvokeRequest request, ServerCallContext context)
+        {
+            AriesJsonListResp output = new AriesJsonListResp();
+            if (request.Data.TryUnpack(out SearchByIndexReq searchReq))
+            {
+                var temp = await handler!.AutoCompleteByIndexAsync(searchReq);
+                output.JsonList = temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message))
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode = "",
+                        ErrMsg = temp.Message
+                    };
+                }
+            }
+            return Any.Pack(output);
+        }
+        private async Task<Any> AutoCompleteAsync(InvokeRequest request, ServerCallContext context)
+        {
+            AriesJsonListResp output = new AriesJsonListResp();
+            if (request.Data.TryUnpack(out SuggesterReq searchReq))
+            {
+                var temp = await handler!.AutoCompleteAsync(searchReq);
+                output.JsonList = temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message))
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode = "",
+                        ErrMsg = temp.Message
+                    };
+                }
             }
             return Any.Pack(output);
         }
@@ -55,6 +108,14 @@ namespace aries.galileo.query
             {
                 var temp =await handler!.GetTopListAsync(topReq);
                 output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                if (!string.IsNullOrEmpty(temp.Message))
+                {
+                    output.Error = new AriesErr()
+                    {
+                        ErrCode = "",
+                        ErrMsg = temp.Message
+                    };
+                }
             }
             return Any.Pack(output);
         }

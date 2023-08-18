@@ -7,6 +7,8 @@ using aries.common.db;
 using aries.common;
 using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
+using System.Text.Json;
+using Nest;
 
 namespace aries.galileo.query
 {
@@ -20,9 +22,9 @@ namespace aries.galileo.query
             this.esClient = esClient;
             // this.phoenixClient = phoenixClient;
         }
-        public async Task<AriesList<SearchItemInfo>> SearchByIndexAsync(SearchByIndexReq request) 
+        public async Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq request) 
         {
-            AriesList<SearchItemInfo> result = new AriesList<SearchItemInfo> { };
+            AriesObject<JsonArray> result = new AriesObject<JsonArray>();
             List<string> keywordFieldList = new List<string>();
             foreach (var item in request.KeywordFields)
             {
@@ -43,10 +45,24 @@ namespace aries.galileo.query
                 }
                 phraseFieldList.Add(tmp);
             }
+            Dictionary<string, EsHightLightFieldInfo> highLights = new Dictionary<string, EsHightLightFieldInfo>();
+            foreach (var item in request.HighlightFields)
+            {
+                highLights.Add(item, new EsHightLightFieldInfo()
+                {
+                    Analyzer = "ik_sync_smart",
+                    PostTags = "</font>",
+                    PreTags = "<font color='red'>"
+                });
+            }
             EsSearchRequest req = new EsSearchRequest()
             {
                 IndexList = new List<string> { request.Index },
                 Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
+                HighLight = new EsHighLightInfo()
+                {
+                    Fields = highLights
+                },
                 Keyword = new EsKeywordQueryInfo()
                 {
                     Keyword = request.Keyword,
@@ -58,8 +74,7 @@ namespace aries.galileo.query
             };
             try
             {
-                EsSearchResponse<JsonObject> resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
-                //转化
+                result.Result = await this.esClient.SearchOp.SearchAsync<dynamic>(req);
             }
             catch (Exception ex)
             {
@@ -67,10 +82,10 @@ namespace aries.galileo.query
             }
             return result;
         }
-        public async Task<AriesList<SearchItemInfo>> SearchAsync(SearchReq request)
+        public async Task<AriesObject<JsonArray>> SearchAsync(SearchReq request)
         {
-            AriesList<SearchItemInfo> result = new AriesList<SearchItemInfo> { };
-            List<string> keywordFieldList = new List<string>();
+            AriesObject<JsonArray> result= new();
+            List<string> keywordFieldList = new();
             foreach (var item in request.KeywordFields)
             {
                 string tmp = item.Item;
@@ -90,9 +105,23 @@ namespace aries.galileo.query
                 }
                 phraseFieldList.Add(tmp);
             }
+            Dictionary<string, EsHightLightFieldInfo> highLights= new Dictionary<string, EsHightLightFieldInfo>();
+            foreach (var item in request.HighlightFields) 
+            {
+                highLights.Add(item, new EsHightLightFieldInfo()
+                {
+                    Analyzer = "ik_sync_smart",
+                    PostTags = "</font>",
+                    PreTags= "<font color='red'>"
+                }) ;
+            }
             EsSearchRequest req = new EsSearchRequest()
             {
                 Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
+                HighLight=new EsHighLightInfo() 
+                {
+                     Fields=highLights
+                },
                 Keyword = new EsKeywordQueryInfo()
                 {
                     Keyword = request.Keyword,
@@ -101,12 +130,12 @@ namespace aries.galileo.query
                     PhraseFieldList = phraseFieldList,
                     Boost = request.Boost,
                     PhraseSlop = request.PhraseSlop,
-                }
+                }   
             };
             try
             {
-              EsSearchResponse<JsonObject> resp=  await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
-              //转化
+
+              result.Result =  await this.esClient.SearchOp.SearchAsync<dynamic>(req);
             }
             catch (Exception ex)
             {
@@ -114,9 +143,53 @@ namespace aries.galileo.query
             }
             return result;
         }
-        public async Task<AriesList<string>> AutoCompleteAsync(AutoCompleteReq request) 
+        public async Task<AriesObject<JsonArray>> AutoCompleteAsync(SuggesterReq request) 
         {
-            AriesList<string> result = new AriesList<string> { };
+            AriesObject<JsonArray> result = new();
+            
+            try
+            {
+                EsSearchRequest req = new EsSearchRequest()
+                {
+                     Suggester=new EsSuggesterInfo()
+                     {
+                         Items = new List<EsSuggesterItem>() { 
+                             new EsSuggesterItem() {
+                                 Name="galileo-suggester",
+                                 Prefix = "title" ,
+                                 Term=new EsTermSuggester()
+                                 {
+                                      Text=request.Keyword,
+                                      Field="",
+                                      
+                                      Analyzer="ik_sync_max_word",
+                                 },
+                                 Phrase=new EsPhraseSuggester()
+                                 {
+                                     Text=request.Keyword,
+                                     Field="",
+                                     Analyzer="ik_sync_max_word",
+                                     MaxErrors=5,
+                                 }
+                             } 
+                         }
+                     }
+
+                };
+                result.Result = await this.esClient.SearchOp.SearchAsync<dynamic>(req);
+               
+
+            }
+            catch (Exception ex)
+            {
+
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+        public async Task<AriesObject<JsonArray>> AutoCompleteByIndexAsync(SearchByIndexReq request)
+        {
+            AriesObject<JsonArray> result = new();
             try
             {
                 EsSearchRequest req = new EsSearchRequest()
@@ -127,13 +200,13 @@ namespace aries.galileo.query
                         KeywordFieldList = new List<string>() { "title", "source", "author" },
                         PhraseFieldList = new List<string>() { "abstract", "content" }
                     },
-                     Suggester=new EsSuggesterInfo()
-                     {
-                         Items = new List<EsSuggesterItem>() { new EsSuggesterItem() { Prefix = "title" } }
-                     }
+                    Suggester = new EsSuggesterInfo()
+                    {
+                        Items = new List<EsSuggesterItem>() { new EsSuggesterItem() { Prefix = "title" } }
+                    }
 
                 };
-                EsSearchResponse<JsonObject> resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
+                JsonArray resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
                 //转化
             }
             catch (Exception ex)

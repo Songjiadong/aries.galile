@@ -2,8 +2,6 @@
 using System.Data;
 using aries.common.db.neo4j;
 using AriesNeo4j = aries.common.db.neo4j;
-using aries.common.db.elasticsearch;
-using AriesEs = aries.common.db.elasticsearch;
 using aries.common.db;
 using aries.common;
 

@@ -24,4 +24,5 @@
         /// </summary>
         public string? PublishedAt { get; set; }
     }
+    
 }
