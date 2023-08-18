@@ -11,6 +11,8 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using aries.common.db;
 using aries.common.db.neo4j;
 using aries.common;
+using Nest;
+using aries.galileo.grpc;
 
 namespace aries.galileo.query
 {
@@ -56,7 +58,9 @@ namespace aries.galileo.query
                 response.Data = request.Method switch
                 {
                     "Galileo$Query$Search" => await SearchAsync(request, context),
+                    "Galileo$Query$AutoComplete" => await AutoCompleteAsync(request, context),
                     "Galileo$Query$SearchByIndex" => await SearchByIndexAsync(request, context),
+                    "Galileo$Query$AutoCompleteByIndex" => await AutoCompleteByIndexAsync(request, context),
                     "Galileo$Query$GetTopList" => await GetTopListAsync(request, context),
                     _ => throw new NotSupportedException($"this {request.Method} is not supported."),
                 };
