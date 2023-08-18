@@ -60,7 +60,6 @@ namespace aries.galileo.query
                     "Galileo$Query$Search" => await SearchAsync(request, context),
                     "Galileo$Query$AutoComplete" => await AutoCompleteAsync(request, context),
                     "Galileo$Query$SearchByIndex" => await SearchByIndexAsync(request, context),
-                    "Galileo$Query$AutoCompleteByIndex" => await AutoCompleteByIndexAsync(request, context),
                     "Galileo$Query$GetTopList" => await GetTopListAsync(request, context),
                     _ => throw new NotSupportedException($"this {request.Method} is not supported."),
                 };

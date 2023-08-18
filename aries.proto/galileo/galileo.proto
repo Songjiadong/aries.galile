@@ -30,11 +30,14 @@ message EsQueryItemField{
   string Item=1;
   double Boost=2;
 }
+
 message SuggesterReq{
 	string Keyword=1;
-	string Text=2;
-	string Name=3;
-	google.protobuf.Int32Value Size=4;
+    string Name=2;
+    string Prefix=3;
+    string Field=4;
+	google.protobuf.Int32Value Size=5;
+    repeated string Index=6;
 }
 
 message TopReq{

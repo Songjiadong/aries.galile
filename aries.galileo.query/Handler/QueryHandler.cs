@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
 using System.Text.Json;
 using Nest;
+using aries.common.db.neo4j;
 
 namespace aries.galileo.query
 {
@@ -22,7 +23,7 @@ namespace aries.galileo.query
             this.esClient = esClient;
             // this.phoenixClient = phoenixClient;
         }
-        public async Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq request) 
+        public async Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq request)
         {
             AriesObject<JsonArray> result = new AriesObject<JsonArray>();
             List<string> keywordFieldList = new List<string>();
@@ -84,7 +85,7 @@ namespace aries.galileo.query
         }
         public async Task<AriesObject<JsonArray>> SearchAsync(SearchReq request)
         {
-            AriesObject<JsonArray> result= new();
+            AriesObject<JsonArray> result = new();
             List<string> keywordFieldList = new();
             foreach (var item in request.KeywordFields)
             {
@@ -105,109 +106,74 @@ namespace aries.galileo.query
                 }
                 phraseFieldList.Add(tmp);
             }
-            Dictionary<string, EsHightLightFieldInfo> highLights= new Dictionary<string, EsHightLightFieldInfo>();
-            foreach (var item in request.HighlightFields) 
+            Dictionary<string, EsHightLightFieldInfo> highLights = new Dictionary<string, EsHightLightFieldInfo>();
+            foreach (var item in request.HighlightFields)
             {
                 highLights.Add(item, new EsHightLightFieldInfo()
                 {
                     Analyzer = "ik_sync_smart",
                     PostTags = "</font>",
-                    PreTags= "<font color='red'>"
-                }) ;
+                    PreTags = "<font color='red'>"
+                });
             }
             EsSearchRequest req = new EsSearchRequest()
             {
                 Page = new RSPage() { RowNum = request.Page.RowNum, Size = request.Page.Size },
-                HighLight=new EsHighLightInfo() 
+                HighLight = new EsHighLightInfo()
                 {
-                     Fields=highLights
+                    Fields = highLights
                 },
                 Keyword = new EsKeywordQueryInfo()
                 {
                     Keyword = request.Keyword,
-                    Analyzer= "ik_sync_smart",
+                    Analyzer = "ik_sync_smart",
                     KeywordFieldList = keywordFieldList,
                     PhraseFieldList = phraseFieldList,
                     Boost = request.Boost,
                     PhraseSlop = request.PhraseSlop,
-                }   
+                }
             };
             try
             {
 
-              result.Result =  await this.esClient.SearchOp.SearchAsync<dynamic>(req);
-            }
-            catch (Exception ex)
-            {
-                result.Message = ex.Message;
-            }
-            return result;
-        }
-        public async Task<AriesObject<JsonArray>> AutoCompleteAsync(SuggesterReq request) 
-        {
-            AriesObject<JsonArray> result = new();
-            
-            try
-            {
-                EsSearchRequest req = new EsSearchRequest()
-                {
-                     Suggester=new EsSuggesterInfo()
-                     {
-                         Items = new List<EsSuggesterItem>() { 
-                             new EsSuggesterItem() {
-                                 Name="galileo-suggester",
-                                 Prefix = "title" ,
-                                 Term=new EsTermSuggester()
-                                 {
-                                      Text=request.Keyword,
-                                      Field="",
-                                      
-                                      Analyzer="ik_sync_max_word",
-                                 },
-                                 Phrase=new EsPhraseSuggester()
-                                 {
-                                     Text=request.Keyword,
-                                     Field="",
-                                     Analyzer="ik_sync_max_word",
-                                     MaxErrors=5,
-                                 }
-                             } 
-                         }
-                     }
-
-                };
                 result.Result = await this.esClient.SearchOp.SearchAsync<dynamic>(req);
-               
-
             }
             catch (Exception ex)
             {
-
                 result.Message = ex.Message;
             }
             return result;
         }
-        public async Task<AriesObject<JsonArray>> AutoCompleteByIndexAsync(SearchByIndexReq request)
+        public async Task<AriesObject<JsonArray>> AutoCompleteAsync(SuggesterReq request)
         {
             AriesObject<JsonArray> result = new();
-            try
+            EsSuggesterRequest req = new EsSuggesterRequest()
             {
-                EsSearchRequest req = new EsSearchRequest()
+                IndexList= (request.Index is null  || request.Index.Count==0)?new List<string>():request.Index.ToList(),
+                Suggester = new EsSuggesterInfo()
                 {
-                    Keyword = new EsKeywordQueryInfo()
+                    Items = new List<EsSuggesterItem>() 
                     {
-                        Keyword = request.Keyword,
-                        KeywordFieldList = new List<string>() { "title", "source", "author" },
-                        PhraseFieldList = new List<string>() { "abstract", "content" }
-                    },
-                    Suggester = new EsSuggesterInfo()
-                    {
-                        Items = new List<EsSuggesterItem>() { new EsSuggesterItem() { Prefix = "title" } }
+                        new EsSuggesterItem()
+                        {
+                            Name = request.Name,
+                            Text=request.Keyword,
+                            Completion=new EsCompletionSuggester()
+                            {
+                                Field = request.Field,
+                                Analyzer = "ik_sync_max_word",
+                                Prefix = request.Prefix,
+                                SkipDuplicates = true,
+                                Size = request.Size,
+                            }
+                        }
                     }
+                }
+            };
+            try
+            { 
+                result.Result = await this.esClient.SearchOp.SuggesterAsync<dynamic>(req);
 
-                };
-                JsonArray resp = await this.esClient.SearchOp.SearchAsync<JsonObject>(req);
-                //转化
             }
             catch (Exception ex)
             {
@@ -216,23 +182,23 @@ namespace aries.galileo.query
             }
             return result;
         }
-
+      
         public async Task<AriesList<TopItemInfo>> GetTopListAsync(TopReq topReq)
         {
-            AriesList < TopItemInfo > result=new AriesList<TopItemInfo>();
+            AriesList<TopItemInfo> result = new AriesList<TopItemInfo>();
             string sql = $"select url,title,top_count from galile_top_info limit {topReq.Top}";
-            var dt=  await ((IDBService)this.phoenixClient).QueryAsync(sql);
-            if (dt.Message != string.Empty) 
+            var dt = await ((IDBService)this.phoenixClient).QueryAsync(sql);
+            if (dt.Message != string.Empty)
             {
-                result.Message=dt.Message;
+                result.Message = dt.Message;
             }
-            foreach (var dr in dt.Result.AsEnumerable()) 
+            foreach (var dr in dt.Result.AsEnumerable())
             {
                 result.Result!.Add(new TopItemInfo()
                 {
                     Title = dr["title"].ToString(),
                     Url = dr["url"].ToString(),
-                    Count =Convert.ToInt64(dr["top_count"])
+                    Count = Convert.ToInt64(dr["top_count"])
                 });
             }
             return result;

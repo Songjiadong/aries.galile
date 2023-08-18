@@ -25,12 +25,6 @@ namespace aries.galileo.query
         /// <returns>提示数据集</returns>
         Task<AriesObject<JsonArray>> AutoCompleteAsync(SuggesterReq request);
         /// <summary>
-        /// 根据Index进行提示操作
-        /// </summary>
-        /// <param name="request">request</param>
-        /// <returns>提示数据集</returns>
-        Task<AriesObject<JsonArray>> AutoCompleteByIndexAsync(SearchByIndexReq request);
-        /// <summary>
         /// 获取热榜列表
         /// </summary>
         /// <param name="topNum">topReq</param>
