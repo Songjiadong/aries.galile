@@ -149,7 +149,7 @@ namespace aries.galileo.query
             AriesObject<JsonArray> result = new();
             EsSuggesterRequest req = new EsSuggesterRequest()
             {
-                IndexList= (request.Index is null  || request.Index.Count==0)?null:request.Index.ToList(),
+                IndexList= (request.Index is null  || request.Index.Count==0)?new List<string>():request.Index.ToList(),
                 Suggester = new EsSuggesterInfo()
                 {
                     Items = new List<EsSuggesterItem>() 
