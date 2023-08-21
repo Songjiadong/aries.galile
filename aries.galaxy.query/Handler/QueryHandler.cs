@@ -46,7 +46,7 @@ namespace aries.galaxy.query
                 DBOperatorEnum.Equal);
             ConditionLeaf targetLeaf = new OrConditionLeaf(targetCond);
             conditions.Add(targetLeaf);
-            NoConditionComposite cond = new NoConditionComposite(conditions);
+            NoConditionComposite cond = new (conditions);
             try
             {
                 result = await client.GraphAsync(whereCond: cond, request.Degree);
