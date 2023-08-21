@@ -1,7 +1,6 @@
 ﻿using aries.common.grpc;
-using aries.common.logger;
-using aries.galaxy.grpc;
-using Dapr;
+using AriesGalaxyGrpc = aries.galaxy.grpc;
+using aries.service.galaxy.Views.request;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,169 +11,76 @@ namespace aries.service.Controllers
         [HttpPut("org/submit")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UnitSubmit(UnitInfoReq nodeReq)
+        public ActionResult OrgSubmit(OrgInfoReq req)
         {
             ActionResult result;
-            try
+            AriesGalaxyGrpc.OrgInfoReq orgInfoReq = req.Convert();
+            result = Submit<GalaxyController>(req.Id!, async () =>
             {
-                await client.InvokeMethodGrpcAsync<UnitInfoReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Organization$Submit", nodeReq);
-                result = Ok();
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
+                return await client.InvokeMethodGrpcAsync<AriesGalaxyGrpc.OrgInfoReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Organization$Submit", orgInfoReq);
+            });
             return result;
         }
-        [HttpDelete("org/delete")]
+        [HttpDelete("org/{businessId}/delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UnitDelete(AriesIdReq idReq)
+        public ActionResult OrgDelete(string businessId)
         {
             ActionResult result;
-            try
+            result = Delete<GalaxyController>(businessId, async () =>
             {
-                await client.InvokeMethodGrpcAsync<AriesIdReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Organization$Delete", idReq);
-                result = Ok();
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
+                return await client.InvokeMethodGrpcAsync<AriesIdReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Organization$Delete", new AriesIdReq { Id= businessId });
+            });
             return result;
         }
         [HttpPut("person/submit")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> PersonSubmit(PersonInfoReq nodeReq)
+        public ActionResult PersonSubmit(PersonInfoReq req)
         {
             ActionResult result;
-            try
+            AriesGalaxyGrpc.PersonInfoReq personInfoReq = req.Convert();
+            result = Submit<GalaxyController>(req.Id!, async () =>
             {
-                await client.InvokeMethodGrpcAsync<PersonInfoReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Person$Submit", nodeReq);
-                result = Ok();
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
+                return await client.InvokeMethodGrpcAsync<AriesGalaxyGrpc.PersonInfoReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Person$Submit", personInfoReq);
+            });
             return result;
         }
-        [HttpDelete("person/delete")]
+        [HttpDelete("person/{businessId}/delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> PersonDelete(AriesIdReq idReq)
+        public ActionResult PersonDelete(string businessId)
         {
             ActionResult result;
-            try
+            result = Delete<GalaxyController>(businessId, async () =>
             {
-                await client.InvokeMethodGrpcAsync<AriesIdReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Person$Delete", idReq);
-                result = Ok();
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
+                return await client.InvokeMethodGrpcAsync<AriesIdReq, Empty>(this.daprappcommandId, "Graph$Command$Node$Person$Delete", new AriesIdReq() { Id = businessId });
+            });
             return result;
         }
         [HttpPut("relation/add")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RelationAdd(UnitInfoReq nodeReq)
+        public ActionResult RelationAdd(OrgInfoReq req)
         {
             ActionResult result;
-            try
+            AriesGalaxyGrpc.OrgInfoReq nodeInfoReq = req.Convert();
+            result = Submit<GalaxyController>("", async () =>
             {
-                await client.InvokeMethodGrpcAsync<UnitInfoReq, Empty>(this.daprappcommandId, "Graph$Command$Relation$Add", nodeReq);
-                result = Ok();
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
+              return  await client.InvokeMethodGrpcAsync<AriesGalaxyGrpc.OrgInfoReq, Empty>(this.daprappcommandId, "Graph$Command$Relation$Add", nodeInfoReq);
+            });
             return result;
         }
-        [HttpDelete("relation/remove")]
+        [HttpDelete("relation/{businessId}/remove")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RelationRemove(AriesIdReq idReq) 
+        public ActionResult RelationRemove(string businessId) 
         {
             ActionResult result;
-            try
+            result = Delete<GalaxyController>(businessId, async () =>
             {
-                await client.InvokeMethodGrpcAsync<AriesIdReq, Empty>(this.daprappcommandId, "Graph$Command$Relation$Remove", idReq);
-                result = Ok();
-            }
-            catch (DaprApiException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex,LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                result = BadRequest(ex);
-                LoggerService.Logger<GalaxyController>(ex, LogLevel.Error);
-            }
+                return await client.InvokeMethodGrpcAsync<AriesIdReq, Empty>(this.daprappcommandId, "Graph$Command$Relation$Remove", new AriesIdReq() { Id= businessId });
+            });
             return result;
         }
     }

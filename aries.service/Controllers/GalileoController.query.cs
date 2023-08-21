@@ -1,6 +1,4 @@
 ﻿using aries.common.grpc;
-using aries.common.logger;
-using Dapr;
 using Microsoft.AspNetCore.Mvc;
 using AriesGalileoGrpc = aries.galileo.grpc;
 using AriesCollectorGrpc = aries.collector.grpc;
@@ -8,7 +6,6 @@ using aries.service.galileo.Views.request;
 using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
-using System.Text.Json;
 
 namespace aries.service.Controllers
 {

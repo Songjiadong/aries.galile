@@ -59,13 +59,13 @@ message GraphSearchReq{
 
 }
 //»ú¹¹
-message UnitInfo{
+message OrgInfo{
     string Id=1;
     google.protobuf.StringValue Name=2;
     
 }
-message UnitInfoReq{
- UnitInfo Unit=1;
+message OrgInfoReq{
+ OrgInfo Organization=1;
 }
 
 //ÈË
@@ -75,5 +75,5 @@ message PersonInfo{
     
 }
 message PersonInfoReq{
- PersonInfo Unit=1;
+ PersonInfo Person=1;
 }
