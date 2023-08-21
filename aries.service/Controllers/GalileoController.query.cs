@@ -154,8 +154,9 @@ namespace aries.service.Controllers
         [HttpPut("browse")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task Browse(string url)
+        public  ActionResult Browse(string url)
         {
+            ActionResult result;
             AriesCollectorGrpc.CollectInfo req = new AriesCollectorGrpc.CollectInfo()
             {
                 Url = url,
@@ -164,23 +165,11 @@ namespace aries.service.Controllers
                 Title = "",
                 UserName = ""
             };
-            try
+            result=DoAction<GalileoController>(async () =>
             {
                 await client.InvokeMethodGrpcAsync<AriesCollectorGrpc.CollectInfo, Empty>(daprappqueryId, "Collector$Manage$UserBehaviorCollect", req);
-            }
-            catch (DaprApiException ex)
-            {
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (DaprException ex)
-            {
-
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
-            catch (Exception ex)
-            {
-                LoggerService.Logger<GalileoController>(ex, LogLevel.Error);
-            }
+            });
+            return result;
         }
         [HttpGet("{topNum}/getTopList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
