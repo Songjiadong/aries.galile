@@ -1,6 +1,4 @@
 ﻿using aries.common.grpc;
-using aries.common.logger;
-using Dapr;
 using Microsoft.AspNetCore.Mvc;
 using AriesGalaxyGrpc = aries.galaxy.grpc;
 using aries.service.galaxy.Views.request;
