@@ -128,6 +128,7 @@ namespace aries.service.Controllers
             req.Field = "suggester";
             req.Name = "galileo-suggester";
             req.Size = 10;
+            req.FuzzyEditDistance = 2;
             result = Search<GalileoController, AriesJsonListResp>(async () => {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoComplete", req);
             });
@@ -143,6 +144,7 @@ namespace aries.service.Controllers
             req.Field = "suggester";
             req.Name = "galileo-suggester";
             req.Size = 10;
+            req.FuzzyEditDistance = 2;
             result = Search<GalileoController, AriesJsonListResp>(async () => {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoComplete", req);
             });

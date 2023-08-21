@@ -38,6 +38,7 @@ message SuggesterReq{
     string Field=4;
 	google.protobuf.Int32Value Size=5;
     repeated string Index=6;
+    google.protobuf.Int32Value FuzzyEditDistance=7;
 }
 
 message TopReq{

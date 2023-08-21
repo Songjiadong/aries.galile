@@ -16,8 +16,8 @@ namespace aries.service.galileo.Views.request
             AriesGrpc.SuggesterReq result = new AriesGrpc.SuggesterReq()
             {
                 Keyword = this.Keyword,
-                Size=this.Size
-              
+                Size=this.Size,
+                FuzzyEditDistance=2,
             };
             return result;
         }
