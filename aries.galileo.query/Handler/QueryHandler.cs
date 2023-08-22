@@ -147,12 +147,12 @@ namespace aries.galileo.query
         public async Task<AriesObject<JsonArray>> AutoCompleteAsync(SuggesterReq request)
         {
             AriesObject<JsonArray> result = new();
-            EsSuggesterRequest req = new EsSuggesterRequest()
+            EsSuggesterRequest req = new ()
             {
-                IndexList= (request.Index is null  || request.Index.Count==0)?new List<string>():request.Index.ToList(),
+                IndexList = (request.Index is null || request.Index.Count == 0) ? new List<string>() : request.Index.ToList(),
                 Suggester = new EsSuggesterInfo()
                 {
-                    Items = new List<EsSuggesterItem>() 
+                    Items = new List<EsSuggesterItem>()
                     {
                         new EsSuggesterItem()
                         {
@@ -165,13 +165,17 @@ namespace aries.galileo.query
                                 Prefix = request.Prefix,
                                 SkipDuplicates = true,
                                 Size = request.Size,
+                                Fuzzy=request.FuzzyEditDistance is  null?null:new EsSuggestFuzziness()
+                                {
+                                    Fuzziness=EsFuzziness.EditDistance(request.FuzzyEditDistance!.Value),
+                                }
                             }
                         }
                     }
                 }
             };
             try
-            { 
+            {
                 result.Result = await this.esClient.SearchOp.SuggesterAsync<dynamic>(req);
 
             }
@@ -182,7 +186,7 @@ namespace aries.galileo.query
             }
             return result;
         }
-      
+
         public async Task<AriesList<TopItemInfo>> GetTopListAsync(TopReq topReq)
         {
             AriesList<TopItemInfo> result = new AriesList<TopItemInfo>();

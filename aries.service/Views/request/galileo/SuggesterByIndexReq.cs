@@ -1,7 +1,6 @@
 ﻿using AriesGrpc = aries.galileo.grpc;
 using aries.common;
 using aries.webapi;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace aries.service.galileo.Views.request
 {
@@ -24,6 +23,7 @@ namespace aries.service.galileo.Views.request
             {
                 Keyword = this.Keyword,
                 Size = this.Size,
+                FuzzyEditDistance = 2,
             };
             result.Index.Add(this.Index!);
             return result;
