@@ -55,12 +55,11 @@ namespace aries.galaxy.query
                     temp.Result.Labels = QueryHandler.GetAllLabelList();
                     foreach (var item in temp.Result.Nodes!.AsEnumerable())
                     {
-                        for (var i = 0; i < item.Labels!.Count; i++)
-                        {
-                            item.Labels[i] = QueryHandler.LabelConvert(item.Labels[i]);
-                        }
+                        string label = item.Properties!.ContainsKey("orgtype") ? item.Properties!["orgtype"].ToString()! : item.Labels![0].ToString();
+                        item.Labels![0] = QueryHandler.LabelConvert(label);
+
                     }
-                    output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                    output.JsonObj = JsonSerializer.Serialize(temp.Result, CommonSource.JsonDefaultOptions);
                 }
             }
             return Any.Pack(output);
@@ -89,12 +88,14 @@ namespace aries.galaxy.query
                     temp.Result.Labels = QueryHandler.GetAllLabelList();
                     foreach (var item in temp.Result.Nodes!.AsEnumerable())
                     {
-                        for (var i = 0; i < item.Labels!.Count; i++)
+                        if (item.Properties!.ContainsKey("orgtype"))
                         {
-                            item.Labels[i] = QueryHandler.LabelConvert(item.Labels[i]);
+                            var orgType = item.Properties["orgtype"];
+                            item.Labels[0] = QueryHandler.LabelConvert(orgType.ToString());
                         }
+
                     }
-                    output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                    output.JsonObj = JsonSerializer.Serialize(temp.Result, CommonSource.JsonDefaultOptions);
                 }
             }
             else

@@ -16,7 +16,7 @@ namespace aries.galaxy.query
         }
         public async Task<AriesDataTable> AutoCompleteAsync(SearchInfo searchInfo)
         {
-            AriesDataTable result = new AriesDataTable();
+            AriesDataTable result = new ();
             List<ConditionComponent> listCond = new List<ConditionComponent>();
             Condition keywordCond = new Condition(DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), searchInfo.Keyword!, DbType.String, DBOperatorEnum.Like);
             ConditionLeaf keyLeaf = new NoConditionLeaf(keywordCond);
@@ -46,7 +46,7 @@ namespace aries.galaxy.query
                 DBOperatorEnum.Equal);
             ConditionLeaf targetLeaf = new OrConditionLeaf(targetCond);
             conditions.Add(targetLeaf);
-            NoConditionComposite cond = new (conditions);
+            NoConditionComposite cond = new(conditions);
             try
             {
                 result = await client.GraphAsync(whereCond: cond, request.Degree);
@@ -62,24 +62,24 @@ namespace aries.galaxy.query
         {
             AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
             List<ConditionComponent> conditions = new List<ConditionComponent>();
-            Condition sourceCond = new Condition("start", 
-                DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), 
+            Condition sourceCond = new Condition("start",
+                DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name),
                 request.FromKeyword!,
                 DbType.String,
                 DBOperatorEnum.Like);
             ConditionLeaf sourceLeaf = new NoConditionLeaf(sourceCond);
             conditions.Add(sourceLeaf);
-            Condition targetCond = new Condition("end", 
+            Condition targetCond = new Condition("end",
                 DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name),
                 request.ToKeyword!,
-                DbType.String, 
+                DbType.String,
                 DBOperatorEnum.Like);
             ConditionLeaf targetLeaf = new AndConditionLeaf(targetCond);
             conditions.Add(targetLeaf);
             NoConditionComposite cond = new NoConditionComposite(conditions);
             try
             {
-                result =await client.ShortestPathAsync<From, To>(request.StartNode!, request.EndNode!, cond);
+                result = await client.ShortestPathAsync<From, To>(request.StartNode!, request.EndNode!, cond);
             }
             catch (Exception ex)
             {
@@ -90,43 +90,53 @@ namespace aries.galaxy.query
         public static List<string> GetAllLabelList()
         {
             List<string> result = typeof(OrganizationTypeEnum).GetDescriptionList();
-            result.Add("人员");
+            result.Remove(OrganizationTypeEnum.Unknown.ToString());
+            result.AddRange(new List<string>() { "人员", "荣誉" });
             return result;
         }
         public static string LabelConvert(string label)
         {
             string result = string.Empty;
-            switch (label)
+            if (label == ((int)OrganizationTypeEnum.GovernmentAgency).ToString())
             {
-                case "GovernmentAgency":
-                    result = "国家机关";
-                    break;
-                case "PublicInstitution":
-                    result = "事业单位";
-                    break;
-                case "SocialOrganization":
-                    result = "社会团体";
-                    break;
-                case "Federation":
-                    result = "行业联合会";
-                    break;
-                case "Association":
-                    result = "行业协会";
-                    break;
-                case "Society":
-                    result = "行业学会";
-                    break;
-                case "University":
-                    result = "高校";
-                    break;
-                case "Enterprise":
-                    result = "企业";
-                    break;
-                case "Person":
-                    result = "人员";
-                    break;
-                default:
-                    throw new NotSupportedException("不支持");
+                result = "国家机关";
+            }
+            else if (label == ((int)OrganizationTypeEnum.PublicInstitution).ToString())
+            {
+                result = "事业单位";
+
+            }
+            else if (label == ((int)OrganizationTypeEnum.SocialOrganization).ToString())
+            {
+                result = "社会团体";
+            }
+            else if (label == ((int)OrganizationTypeEnum.Federation).ToString())
+            {
+                result = "行业联合会";
+            }
+            else if (label == ((int)OrganizationTypeEnum.Association).ToString())
+            {
+                result = "行业协会";
+            }
+            else if (label == ((int)OrganizationTypeEnum.Society).ToString())
+            {
+                result = "行业学会";
+            }
+            else if (label == ((int)OrganizationTypeEnum.University).ToString())
+            {
+                result = "高校";
+            }
+            else if (label == ((int)OrganizationTypeEnum.Enterprise).ToString())
+            {
+                result = "企业";
+            }
+            else if (label == "Person")
+            {
+                result = "人员";
+            }
+            else if (label == "Honor") 
+            {
+                result = "荣誉";
             }
             return result;
         }
