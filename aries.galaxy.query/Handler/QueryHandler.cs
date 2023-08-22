@@ -17,7 +17,7 @@ namespace aries.galaxy.query
         public async Task<AriesDataTable> AutoCompleteAsync(SearchInfo searchInfo)
         {
             AriesDataTable result = new ();
-            List<ConditionComponent> listCond = new List<ConditionComponent>();
+            List<ConditionComponent> listCond = new();
             Condition keywordCond = new Condition(DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name), searchInfo.Keyword!, DbType.String, DBOperatorEnum.Like);
             ConditionLeaf keyLeaf = new NoConditionLeaf(keywordCond);
             listCond.Add(keyLeaf);
@@ -30,8 +30,8 @@ namespace aries.galaxy.query
         }
         public async Task<AriesObject<GraphInfo>> GraphAsync(GraphDegreeReq request)
         {
-            AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
-            List<ConditionComponent> conditions = new List<ConditionComponent>();
+            AriesObject<GraphInfo> result = new () { };
+            List<ConditionComponent> conditions = new ();
             Condition sourceCond = new Condition("source",
                 DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Id),
                 request.Id!,
@@ -60,7 +60,7 @@ namespace aries.galaxy.query
 
         public async Task<AriesObject<GraphInfo>> ShortestPathAsync<From, To>(RelationSearchInfo<From, To> request) where From : GGraphEntityInfo where To : GGraphEntityInfo
         {
-            AriesObject<GraphInfo> result = new AriesObject<GraphInfo> { };
+            AriesObject<GraphInfo> result = new() { };
             List<ConditionComponent> conditions = new List<ConditionComponent>();
             Condition sourceCond = new Condition("start",
                 DBSource.Attribute.GetCypherColumnNameByPropertyName<GGraphEntityInfo, string?>(o => o.Name),
