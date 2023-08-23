@@ -3,7 +3,7 @@ using System.Data;
 
 namespace aries.galaxy.command
 {
-    public class PersonInfo
+    public class HonorInfo
     {
         [DBField(StorageName = "ID", SqlDbType = DbType.String, IsPrimaryKey = true, Description = "主键")]
         public string? Id { get; set; }

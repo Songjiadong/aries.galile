@@ -21,6 +21,10 @@ namespace aries.galaxy.command
         public int? OrgType { get; set; }
         [DBField(StorageName = "USCC", SqlDbType = DbType.String, Description = "社会信用统一代码")]
         public string? USCC { get; set; }
+        [DBField(StorageName = "REGISTRATION_AUTHORITY", SqlDbType = DbType.String, Description = "登记机关")]
+        public string? RegistrationAuthority { get; set; }
+        [DBField(StorageName = "STATE_OF_OPERATION", SqlDbType = DbType.Int32,IsNotNull =true, Description = "登记状态")]
+        public StateOfConditionEnum? StateOfCondition { get; set; }
         [DBField(StorageName = "LOGO", SqlDbType = DbType.String, Description = "Logo")]
         public string? Logo { get; set; }
         [DBField(StorageName = "URL", SqlDbType = DbType.String, Description = "官网Url")]
@@ -40,7 +44,9 @@ namespace aries.galaxy.command
         [DBField(StorageName = "SOURCE", SqlDbType = DbType.Int32, IsNotNull = true, Description = "信息获取来源")]
         public int? Source { get; set; }
         [DBField(StorageName = "CERTIFICATION_STATUS", SqlDbType = DbType.Int32, IsNotNull = true, Description = "认证状态")]
-        public int? CertificationStatus { get; set; }  
+        public int? CertificationStatus { get; set; }
+        [DBField(StorageName = "CAN_SUBMIT", SqlDbType = DbType.Int32, IsNotNull = true,DefaultStorageName =false, Description = "是否提交")]
+        public YesNoEnum CanSubmit { get; set; }
     }
     [DBTable(DBStorageName = "galaxy", StorageName = "organization_history_info", Description = "机构信息历史采集")]
     public class OrganizationHistoryInfo
@@ -58,6 +64,8 @@ namespace aries.galaxy.command
         public int? OrgType { get; set; }
         [DBField(StorageName = "USCC", SqlDbType = DbType.String, Description = "社会信用统一代码")]
         public string? USCC { get; set; }
+        [DBField(StorageName = "STATE_OF_OPERATION", SqlDbType = DbType.Int32,IsNotNull =true, Description = "登记状态")]
+        public StateOfConditionEnum? StateOfCondition { get; set; }
         [DBField(StorageName = "LOGO", SqlDbType = DbType.String, Description = "Logo")]
         public string? Logo { get; set; }
         [DBField(StorageName = "URL", SqlDbType = DbType.String, Description = "官网Url")]
