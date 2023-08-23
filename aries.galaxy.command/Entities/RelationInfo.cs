@@ -3,7 +3,7 @@ using aries.common.db.rdms;
 using System.Data;
 using System.Numerics;
 
-namespace aries.graph.command
+namespace aries.galaxy.command
 {
     [DBTable(DBStorageName = "galaxy", StorageName = "relation_info", Description = "关系信息采集")]
     public class RelationInfo

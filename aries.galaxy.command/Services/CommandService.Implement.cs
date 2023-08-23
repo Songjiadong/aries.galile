@@ -2,7 +2,7 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
-namespace aries.graph.command
+namespace aries.galaxy.command
 {
     public partial class CommandService
     {

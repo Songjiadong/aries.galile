@@ -1,6 +1,6 @@
 ﻿using aries.common.cqrs;
 
-namespace aries.graph.command.relation
+namespace aries.galaxy.command.relation
 {
     public class AddCommandInfo:CommandInfo
     {
