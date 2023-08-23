@@ -77,3 +77,12 @@ message PersonInfo{
 message PersonInfoReq{
  PersonInfo Person=1;
 }
+//ÈÙÓþ
+message HonorInfo{
+    string Id=1;
+    google.protobuf.StringValue Name=2;
+    
+}
+message HonorInfoReq{
+ HonorInfo Honor=1;
+}
