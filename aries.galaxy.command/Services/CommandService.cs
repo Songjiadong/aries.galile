@@ -3,7 +3,7 @@ using Dapr.Client.Autogen.Grpc.v1;
 using Grpc.Core;
 
 
-namespace aries.graph.command
+namespace aries.galaxy.command
 {
     public partial class CommandService : AppCallback.AppCallbackBase
     {
