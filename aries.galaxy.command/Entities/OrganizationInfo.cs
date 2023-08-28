@@ -47,7 +47,7 @@ namespace aries.galaxy.command
         public DateTime? PublishedAt { get; set; }
         [DBField(StorageName = "SOURCE", SqlDbType = DbType.Int32, IsNotNull = true, Description = "信息获取来源")]
         public int? Source { get; set; }
-        [DBField(StorageName = "STATUS", SqlDbType = DbType.Int32, IsNotNull = true, Description = "信息状态")]
+        [DBField(StorageName = "STATUS", SqlDbType = DbType.Int32, IsNotNull = true, Description = "信息填充状态")]
         public InfoStatusEnum? Status { get; set; }
         [DBField(StorageName = "CERTIFICATION_STATUS", SqlDbType = DbType.Int32, IsNotNull = true, Description = "认证状态")]
         public int? CertificationStatus { get; set; }
