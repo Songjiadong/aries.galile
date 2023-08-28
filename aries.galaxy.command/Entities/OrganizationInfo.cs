@@ -17,6 +17,8 @@ namespace aries.galaxy.command
         public string? EnglishName { get; set; }
         [DBField(StorageName = "ABBR_NAME", SqlDbType = DbType.String, Description = "简称")]
         public string? AbbreviationName { get; set; }
+        [DBField(StorageName = "OLD_NAME", SqlDbType = DbType.String, Description = "曾用名，以‘，’分隔")]
+        public string? OldName { get; set; }
         [DBField(StorageName = "ORG_TYPE", SqlDbType = DbType.Int32, Description = "机构类别")]
         public int? OrgType { get; set; }
         [DBField(StorageName = "USCC", SqlDbType = DbType.String, Description = "社会信用统一代码")]
