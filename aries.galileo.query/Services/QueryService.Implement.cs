@@ -86,11 +86,11 @@ namespace aries.galileo.query
         /// <returns></returns>
         private async Task<Any> GetTopListAsync(InvokeRequest request, ServerCallContext context)
         {
-            AriesJsonObjResp output = new AriesJsonObjResp();
+            AriesJsonListResp output = new AriesJsonListResp();
             if (request.Data.TryUnpack(out TopReq topReq))
             {
                 var temp =await handler!.GetTopListAsync(topReq);
-                output.JsonObj = JsonSerializer.Serialize(temp, CommonSource.JsonDefaultOptions);
+                output.JsonList = JsonSerializer.Serialize(temp.Result, CommonSource.JsonDefaultOptions);
                 if (!string.IsNullOrEmpty(temp.Message))
                 {
                     output.Error = new AriesErr()

@@ -6,7 +6,7 @@ using System.Net.Mime;
 
 namespace aries.service.Controllers
 {
-    [Route("api/galile")]
+    [Route("api/galileo")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     public partial class GalileoController : AriesWebAPIControllerBase

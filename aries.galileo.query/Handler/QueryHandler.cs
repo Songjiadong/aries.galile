@@ -147,7 +147,7 @@ namespace aries.galileo.query
         public async Task<AriesObject<JsonArray>> AutoCompleteAsync(SuggesterReq request)
         {
             AriesObject<JsonArray> result = new();
-            EsSuggesterRequest req = new ()
+            EsSuggesterRequest req = new()
             {
                 IndexList = (request.Index is null || request.Index.Count == 0) ? new List<string>() : request.Index.ToList(),
                 Suggester = new EsSuggesterInfo()
@@ -190,21 +190,36 @@ namespace aries.galileo.query
         public async Task<AriesList<TopItemInfo>> GetTopListAsync(TopReq topReq)
         {
             AriesList<TopItemInfo> result = new AriesList<TopItemInfo>();
-            string sql = $"select url,title,top_count from galile_top_info limit {topReq.Top}";
-            var dt = await ((IDBService)this.phoenixClient).QueryAsync(sql);
-            if (dt.Message != string.Empty)
+            List<TopItemInfo> db = new List<TopItemInfo>() 
             {
-                result.Message = dt.Message;
-            }
-            foreach (var dr in dt.Result.AsEnumerable())
-            {
-                result.Result!.Add(new TopItemInfo()
-                {
-                    Title = dr["title"].ToString(),
-                    Url = dr["url"].ToString(),
-                    Count = Convert.ToInt64(dr["top_count"])
-                });
-            }
+                  new TopItemInfo() {Title="机械工业信息中心",Url="http://www.miic.com.cn",Count=1000},
+                 new TopItemInfo() {Title="中国机械工业联合会",Url="http://www.cmif.org.cn",Count=999},
+                 new TopItemInfo() {Title="CMIF",Url="http://www.cmif.org.cn",Count=890},
+                 new TopItemInfo() {Title="徐念沙会长一行调研大连光洋科技集团",Url="http://www.mei.net.cn/jcgj/202308/474497406495397781.html?l=ldhd",Count=600},
+                 new TopItemInfo() {Title="叶定达总经济师会见新疆工信厅副厅长柳奇一行",Url="http://www.mei.net.cn/jxgy/202308/475627214939920277.html?l=ldhd",Count=600},
+                 new TopItemInfo(){ Title="通用技术集团党组召开理论学习中心组2023年第十二次集体学习暨主题教育专题学习",Url="https://www.gt.cn/xwzx/jtxw/202308/t20230828_40913.html",Count=100},
+                 new TopItemInfo(){ Title="2023两岸机械工业交流会在新乡成功召开",Url="http://www.mei.net.cn/jxgy/202308/475899333900801941.html?l=gzdt",Count=400},
+                 new TopItemInfo(){Title="中央企业团工委、中央企业青联关于动员中央企业各级团青组织和广大团员青年积极投身防汛救灾工作的倡议书 ",Url="http://www.sasac.gov.cn/n2588030/n2588919/c28540065/content.html",Count=399 },
+                 new TopItemInfo() {Title="机经网",Url="http://www.mei.net.cn",Count=300},
+                 new TopItemInfo() {Title="叶定达总经济师会见新疆生产建设兵团工信局局长郇恒赛一行",Url="http://www.mei.net.cn/jxgy/202308/475627508943853461.html",Count=100}
+            };
+            result.Result = db.Take(topReq.Top).ToList();
+            
+            //string sql = $"select url,title,top_count from galile_top_info limit {topReq.Top}";
+            //var dt = await ((IDBService)this.phoenixClient).QueryAsync(sql);
+            //if (dt.Message != string.Empty)
+            //{
+            //    result.Message = dt.Message;
+            //}
+            //foreach (var dr in dt.Result.AsEnumerable())
+            //{
+            //    result.Result!.Add(new TopItemInfo()
+            //    {
+            //        Title = dr["title"].ToString(),
+            //        Url = dr["url"].ToString(),
+            //        Count = Convert.ToInt64(dr["top_count"])
+            //    });
+            //}
             return result;
         }
     }
