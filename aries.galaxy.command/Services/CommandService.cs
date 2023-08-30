@@ -7,10 +7,9 @@ namespace aries.galaxy.command
 {
     public partial class CommandService : AppCallback.AppCallbackBase
     {
-        private readonly ILogger<CommandService> logger;
-        public CommandService(ILogger<CommandService> logger)
+        public CommandService(IConfiguration configuration)
         {
-            this.logger = logger;
+            
         }
 
         public override Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)

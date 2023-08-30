@@ -24,21 +24,28 @@ namespace aries.galaxy.query
         public QueryService(IConfiguration configuration)
         {
             AriesNeo4j.DBService? neo4jClient = null;
-            ConfigService<QueryService> configService = new ConfigService<QueryService>(configuration);
-            //1初始化neo4j
-            Neo4jConfigOptions  neo4jOps = configService.ApolloPull<Neo4jConfigOptions>("neo4j")!;
-            neo4jClient= configService.ClientInit(() =>
+            ConfigService<QueryService> configService = new(configuration);
+            try
             {
-                 return new AriesNeo4j.DBService(new AriesNeo4j.DBOpService<QueryService>(neo4jOps));
-            });
-          
-            if (neo4jClient is not null)
-            {
-                handler = new QueryHandler(neo4jClient);
+                //1初始化neo4j
+                Neo4jConfigOptions neo4jOps = configService.ApolloPull<Neo4jConfigOptions>("neo4j")!;
+                neo4jClient = configService.ClientInit(() =>
+                {
+                    return new AriesNeo4j.DBService(new AriesNeo4j.DBOpService<QueryService>(neo4jOps));
+                });
+
+                if (neo4jClient is not null)
+                {
+                    handler = new QueryHandler(neo4jClient);
+                }
+                else
+                {
+                    throw new NullReferenceException("QueryHandler初始化失败...");
+                }
             }
-            else 
+            catch (Exception ex) 
             {
-                throw new NullReferenceException("QueryHandler初始化失败...");
+                LoggerService.LoggerError<QueryService>(ex);
             }
         }
         public override async Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)
