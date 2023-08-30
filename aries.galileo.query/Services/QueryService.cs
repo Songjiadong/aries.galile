@@ -24,31 +24,38 @@ namespace aries.galileo.query
             AriesEs.DBService? esClient = null;
             AriesPhoenix.DBService? phoenixClient=null;
             ConfigService<QueryService> configService = new ConfigService<QueryService>(configuration);
-            //2初始化elasticsearch
-            EsConfigOptions esOps = configService.ApolloPull<EsConfigOptions>("elasticsearch")!;
-            esClient = configService.ClientInit(() =>
+            try
             {
-                return new AriesEs.DBService(new AriesEs.DBOpService<QueryService>(esOps));
-            });
-            if (esClient is null) 
-            {
-                throw new NullReferenceException(nameof(esClient));
+                //2初始化elasticsearch
+                EsConfigOptions esOps = configService.ApolloPull<EsConfigOptions>("elasticsearch")!;
+                esClient = configService.ClientInit(() =>
+                {
+                    return new AriesEs.DBService(new AriesEs.DBOpService<QueryService>(esOps));
+                });
+                if (esClient is null)
+                {
+                    throw new NullReferenceException(nameof(esClient));
+                }
+                handler = new QueryHandler(esClient);
+                ////3初始化phoenix
+                //PhoenixConfigOptions phoenixOps = ApolloPull<PhoenixConfigOptions>("phoenix")!;
+                //phoenixClient = ClientInit(() =>
+                //{
+                //    return new AriesPhoenix.DBService(new AriesPhoenix.DBOpService<QueryService>(phoenixOps));
+                //});
+                //if (esClient is not null&&phoenixClient is not null)
+                //{
+                //    handler = new QueryHandler(esClient,phoenixClient);
+                //}
+                //else
+                //{
+                //    throw new NullReferenceException($"{nameof(QueryHandler)}初始化失败...");
+                //}
             }
-            handler = new QueryHandler(esClient);
-            ////3初始化phoenix
-            //PhoenixConfigOptions phoenixOps = ApolloPull<PhoenixConfigOptions>("phoenix")!;
-            //phoenixClient = ClientInit(() =>
-            //{
-            //    return new AriesPhoenix.DBService(new AriesPhoenix.DBOpService<QueryService>(phoenixOps));
-            //});
-            //if (esClient is not null&&phoenixClient is not null)
-            //{
-            //    handler = new QueryHandler(esClient,phoenixClient);
-            //}
-            //else
-            //{
-            //    throw new NullReferenceException($"{nameof(QueryHandler)}初始化失败...");
-            //}
+            catch (Exception ex) 
+            {
+                LoggerService.LoggerError<QueryService>(ex);
+            }
         }
         public override async Task<InvokeResponse> OnInvoke(InvokeRequest request, ServerCallContext context)
         {
