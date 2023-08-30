@@ -1,4 +1,4 @@
-using aries.graph.command;
+using aries.galaxy.command;
 using Com.Ctrip.Framework.Apollo;
 
 IConfiguration configuration = new ConfigurationBuilder()

@@ -3,7 +3,7 @@ using aries.common.db.rdms;
 using System.Numerics;
 using System.Data;
 
-namespace aries.graph.command
+namespace aries.galaxy.command
 {
     [DBTable(DBStorageName = "galaxy", StorageName = "organization_info", Description ="机构信息采集")]
     public class OrganizationInfo
@@ -17,10 +17,16 @@ namespace aries.graph.command
         public string? EnglishName { get; set; }
         [DBField(StorageName = "ABBR_NAME", SqlDbType = DbType.String, Description = "简称")]
         public string? AbbreviationName { get; set; }
+        [DBField(StorageName = "OLD_NAME", SqlDbType = DbType.String, Description = "曾用名，以‘，’分隔")]
+        public string? OldName { get; set; }
         [DBField(StorageName = "ORG_TYPE", SqlDbType = DbType.Int32, Description = "机构类别")]
         public int? OrgType { get; set; }
         [DBField(StorageName = "USCC", SqlDbType = DbType.String, Description = "社会信用统一代码")]
         public string? USCC { get; set; }
+        [DBField(StorageName = "REGISTRATION_AUTHORITY", SqlDbType = DbType.String, Description = "登记机关")]
+        public string? RegistrationAuthority { get; set; }
+        [DBField(StorageName = "STATE_OF_OPERATION", SqlDbType = DbType.Int32,IsNotNull =true, Description = "登记状态")]
+        public StateOfOperationEnum? StateOfCondition { get; set; }
         [DBField(StorageName = "LOGO", SqlDbType = DbType.String, Description = "Logo")]
         public string? Logo { get; set; }
         [DBField(StorageName = "URL", SqlDbType = DbType.String, Description = "官网Url")]
@@ -29,8 +35,12 @@ namespace aries.graph.command
         public string? Person { get; set; }
         [DBField(StorageName = "ADDRESS", SqlDbType = DbType.String, Description = "地址")]
         public string? Address { get; set; }
+        [DBField(StorageName = "INDUSTRY", SqlDbType = DbType.String, Description = "国标行业")]
+        public string? Industry { get; set; }
         [DBField(StorageName = "BUSINESS_SCOPE", SqlDbType = DbType.String, Description = "经营范围")]
         public string? BusinessScope { get; set; }
+        [DBField(StorageName = "REMARK", SqlDbType = DbType.String, Description = "简介描述")]
+        public string? Remark { get; set; }
         [DBField(StorageName = "CREATED", SqlDbType = DbType.Date, IsNotNull = true, Description = "创建时间")]
         public DateTime? CreatedAt { get; set; }
         [DBField(StorageName = "UPDATED", SqlDbType = DbType.Date, IsNotNull = true, Description = "修改时间")]
@@ -39,8 +49,12 @@ namespace aries.graph.command
         public DateTime? PublishedAt { get; set; }
         [DBField(StorageName = "SOURCE", SqlDbType = DbType.Int32, IsNotNull = true, Description = "信息获取来源")]
         public int? Source { get; set; }
+        [DBField(StorageName = "STATUS", SqlDbType = DbType.Int32, IsNotNull = true, Description = "信息填充状态")]
+        public InfoStatusEnum? Status { get; set; }
         [DBField(StorageName = "CERTIFICATION_STATUS", SqlDbType = DbType.Int32, IsNotNull = true, Description = "认证状态")]
-        public int? CertificationStatus { get; set; }  
+        public int? CertificationStatus { get; set; }
+        [DBField(StorageName = "CAN_SUBMIT", SqlDbType = DbType.Int32, IsNotNull = true,DefaultStorageName =false, Description = "是否提交")]
+        public YesNoEnum CanSubmit { get; set; }
     }
     [DBTable(DBStorageName = "galaxy", StorageName = "organization_history_info", Description = "机构信息历史采集")]
     public class OrganizationHistoryInfo
@@ -58,6 +72,8 @@ namespace aries.graph.command
         public int? OrgType { get; set; }
         [DBField(StorageName = "USCC", SqlDbType = DbType.String, Description = "社会信用统一代码")]
         public string? USCC { get; set; }
+        [DBField(StorageName = "STATE_OF_OPERATION", SqlDbType = DbType.Int32,IsNotNull =true, Description = "登记状态")]
+        public StateOfOperationEnum? StateOfCondition { get; set; }
         [DBField(StorageName = "LOGO", SqlDbType = DbType.String, Description = "Logo")]
         public string? Logo { get; set; }
         [DBField(StorageName = "URL", SqlDbType = DbType.String, Description = "官网Url")]
@@ -66,6 +82,8 @@ namespace aries.graph.command
         public string? Person { get; set; }
         [DBField(StorageName = "ADDRESS", SqlDbType = DbType.String, Description = "地址")]
         public string? Address { get; set; }
+        [DBField(StorageName = "INDUSTRY", SqlDbType = DbType.String, Description = "国标行业")]
+        public string? Industry { get; set; }
         [DBField(StorageName = "BUSINESS_SCOPE", SqlDbType = DbType.String, Description = "经营范围")]
         public string? BusinessScope { get; set; }
         [DBField(StorageName = "SOURCE", SqlDbType = DbType.Int32,IsNotNull =true, Description = "信息获取来源")]

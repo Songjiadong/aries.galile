@@ -1,7 +1,7 @@
 ﻿using aries.common;
 using aries.common.cqrs;
 
-namespace aries.graph.command.organization
+namespace aries.galaxy.command.organization
 {
     public class AddCommandInfo:CommandInfo
     {

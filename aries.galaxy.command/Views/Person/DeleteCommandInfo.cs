@@ -1,6 +1,6 @@
 ﻿using aries.common.cqrs;
 
-namespace aries.graph.command.organization
+namespace aries.galaxy.command.person
 {
     public class DeleteCommandInfo: CommandInfo
     {

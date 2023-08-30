@@ -1,16 +1,16 @@
 ﻿using aries.common.cqrs;
 using aries.common.db.rdms;
 
-namespace aries.graph.command.relation
+namespace aries.galaxy.command.relation
 {
     public class RelationHandler :
         ICommandHandler<AddCommandInfo>,
         ICommandHandler<RemoveCommandInfo>
     {
-        private readonly IDBService mysqlClient;
-        public RelationHandler(IDBService mysqlClient) 
+        private readonly IDBService client;
+        public RelationHandler(IDBService client) 
         { 
-            this.mysqlClient = mysqlClient;
+            this.client = client;
         }
         /// <summary>
         /// 添加关系操作

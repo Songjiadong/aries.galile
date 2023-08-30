@@ -1,4 +1,4 @@
-﻿namespace aries.graph.command
+﻿namespace aries.galaxy.command.relation
 {
     public class RemoveCommandInfo
     {

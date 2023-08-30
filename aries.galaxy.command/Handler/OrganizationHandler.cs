@@ -1,18 +1,19 @@
-﻿using aries.common.cqrs;
+﻿using aries.businessapi;
+using aries.common.cqrs;
 using aries.common.db.rdms;
-using aries.common.logger;
 
-namespace aries.graph.command.organization
+namespace aries.galaxy.command.organization
 {
-    public class OrganizationHandler :
+    public class OrganizationHandler : AriesBusinessAPIBase,
         ICommandHandler<AddCommandInfo>,
         ICommandHandler<DeleteCommandInfo>,
-        ICommandHandler<UpdateCommandInfo>
+        ICommandHandler<UpdateCommandInfo> 
+        
     {
-        private readonly IDBService mysqlClient;
-        public OrganizationHandler(IDBService mysqlClient)
+        private readonly IDBService client;
+        public OrganizationHandler(IDBService client)
         {
-            this.mysqlClient = mysqlClient;
+            this.client = client;
         }
         /// <summary>
         /// 提交操作
@@ -21,10 +22,8 @@ namespace aries.graph.command.organization
         /// <exception cref="NotImplementedException"></exception>
         public void Handle(AddCommandInfo command)
         {
-            int count = 0;
-            try
-            {
-                mysqlClient.Insert(new OrganizationInfo()
+            Do<OrganizationHandler>(()=> {
+                client.Insert(new OrganizationInfo()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Address = command.Address,
@@ -41,12 +40,9 @@ namespace aries.graph.command.organization
                     USCC = command.USCC,
                     Source = (int?)command.Source,
                     UpdatedAt = DateTime.Now,
-                }, out count);
-            }
-            catch (Exception ex) 
-            {
-                LoggerService.Logger<OrganizationHandler>(ex, LogLevel.Warning);
-            }
+                }, out int count);
+            });
+          
         }
         /// <summary>
         /// 删除操作
@@ -55,14 +51,9 @@ namespace aries.graph.command.organization
         /// <exception cref="NotImplementedException"></exception>
         public void Handle(DeleteCommandInfo command)
         {
-            try 
-            {
-                mysqlClient.Delete(new OrganizationInfo { Id = command.Id.ToString() });
-            }
-            catch(Exception ex) 
-            {
-                LoggerService.Logger<OrganizationHandler>(ex, LogLevel.Warning);
-            }
+            Do<OrganizationHandler>(() => {
+                client.Delete(new OrganizationInfo { Id = command.Id.ToString() });
+            });
         }
         /// <summary>
         /// 修改操作
@@ -71,19 +62,13 @@ namespace aries.graph.command.organization
         /// <exception cref="NotImplementedException"></exception>
         public void Handle(UpdateCommandInfo command)
         {
-            int count = 0;
-            try 
-            {
-                mysqlClient.Update<OrganizationInfo>(new OrganizationInfo() 
+            Do<OrganizationHandler>(() => {
+                client.Update<OrganizationInfo>(new OrganizationInfo()
                 {
                     Id = command.Id.ToString(),
-                    
-                }, out count);
-            } 
-            catch (Exception ex) 
-            {
-                LoggerService.Logger<OrganizationHandler>(ex, LogLevel.Warning);
-            }
+
+                }, out int count);
+            });
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using aries.common.cqrs;
 
-namespace aries.graph.command.person
+namespace aries.galaxy.command.organization
 {
     public class UpdateCommandInfo:CommandInfo
     {
