@@ -7,6 +7,10 @@ namespace aries.service.galileo.Views.request
     public class SearchReq : TReq<AriesGrpc.SearchReq>
     {
         /// <summary>
+        /// 排序方式
+        /// </summary>
+        public SortTypeEnum? Sort { get; set; }
+        /// <summary>
         /// 关键字
         /// </summary>
         public string? Keyword { get; set; }

@@ -14,6 +14,7 @@ message SearchReq {
    google.protobuf.DoubleValue Boost=6;
    repeated string HighlightFields=7;
    AriesPage Page=2;
+   repeated EsSortField SortFields=8;
 }
 //搜索请求项（按分类）
 message SearchByIndexReq{
@@ -25,12 +26,16 @@ message SearchByIndexReq{
   repeated string HighlightFields=8;
   string Index=2;
   AriesPage Page=3;
+  repeated EsSortField SortFields=9;
 }
 message EsQueryItemField{
   string Item=1;
   double Boost=2;
 }
-
+message EsSortField{
+  string Sort=1;
+  int32 SortType=2;
+}
 message SuggesterReq{
 	string Keyword=1;
     string Name=2;

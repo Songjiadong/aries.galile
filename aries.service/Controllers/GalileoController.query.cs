@@ -6,6 +6,7 @@ using aries.service.galileo.Views.request;
 using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
+using aries.common.db;
 
 namespace aries.service.Controllers
 {
@@ -18,6 +19,13 @@ namespace aries.service.Controllers
         {
             ActionResult result;
             AriesGalileoGrpc.SearchReq req = searchReq.Convert();
+            if (searchReq.Sort == galileo.SortTypeEnum.Score) { }
+            else 
+            {
+                List<AriesGalileoGrpc.EsSortField> sortFields = new List<AriesGalileoGrpc.EsSortField>()
+                {new AriesGalileoGrpc.EsSortField(){Sort= "PublishAt",SortType=(int)SortTypeEnum.Desc } };
+                req.SortFields.AddRange(sortFields);
+            }
             req.Boost = 1;
             //req.PhraseSlop = 1;
             List<AriesGalileoGrpc.EsQueryItemField> keywordFields = new()
@@ -56,6 +64,13 @@ namespace aries.service.Controllers
         {
             ActionResult result;
             AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
+            if (searchReq.Sort == galileo.SortTypeEnum.Score) { }
+            else
+            {
+                List<AriesGalileoGrpc.EsSortField> sortFields = new List<AriesGalileoGrpc.EsSortField>() 
+                {new AriesGalileoGrpc.EsSortField(){Sort= "PublishAt",SortType=(int)SortTypeEnum.Desc } };
+                req.SortFields.AddRange(sortFields);
+            }
             req.Boost = 1;
             //req.PhraseSlop = 1;
             List<AriesGalileoGrpc.EsQueryItemField> keywordFields = searchReq.Index switch
