@@ -8,7 +8,6 @@ using aries.common;
 using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
 using System.Text.Json;
-using Nest;
 using aries.common.db.neo4j;
 
 namespace aries.galileo.query
@@ -234,7 +233,7 @@ namespace aries.galileo.query
             //        Count = Convert.ToInt64(dr["top_count"])
             //    });
             //}
-            return result;
+            return await Task.FromResult(result);
         }
     }
 }
