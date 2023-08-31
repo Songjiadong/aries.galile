@@ -11,7 +11,6 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using aries.common.db;
 using aries.common.db.neo4j;
 using aries.common;
-using Nest;
 using aries.galileo.grpc;
 
 namespace aries.galileo.query
