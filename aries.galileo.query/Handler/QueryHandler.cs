@@ -131,8 +131,22 @@ namespace aries.galileo.query
                     PhraseFieldList = phraseFieldList,
                     Boost = request.Boost,
                     PhraseSlop = request.PhraseSlop,
-                }
+                },
+                   
             };
+            if (request.SortFields is not null && request.SortFields.Count > 0) 
+            {
+                SortList sortList = new SortList();
+                foreach (var item in request.SortFields)
+                {
+                    sortList.Sorts.Add(new SortInfo()
+                    {
+                        SortName = item.Sort,
+                        SortType = ((SortTypeEnum)item.SortType)
+                    });
+                }
+                req.Sort = sortList;
+            }
             try
             {
 
