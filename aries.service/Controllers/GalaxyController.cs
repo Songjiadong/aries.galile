@@ -1,5 +1,4 @@
-﻿using aries.common.logger;
-using aries.webapi;
+﻿using aries.webapi;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
