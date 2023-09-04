@@ -18,11 +18,11 @@ namespace aries.galileo.query
         /// <returns></returns>
         private async Task<Any> SearchAsync(InvokeRequest request, ServerCallContext context)
         {
-            AriesJsonListResp output = new AriesJsonListResp();
+            AriesJsonObjResp output = new AriesJsonObjResp();
             if (request.Data.TryUnpack(out SearchReq searchReq))
             {
                 var temp = await handler!.SearchAsync(searchReq);
-                output.JsonList=temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
+                output.JsonObj=temp.Result.ToJsonString(CommonSource.JsonDefaultOptions);
                 if (!string.IsNullOrEmpty(temp.Message)) 
                 {
                     output.Error = new AriesErr()
