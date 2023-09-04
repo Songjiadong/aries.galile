@@ -22,9 +22,9 @@ namespace aries.galileo.query
             this.esClient = esClient;
             // this.phoenixClient = phoenixClient;
         }
-        public async Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq request)
+        public async Task<AriesObject<JsonObject>> SearchByIndexAsync(SearchByIndexReq request)
         {
-            AriesObject<JsonArray> result = new AriesObject<JsonArray>();
+            AriesObject<JsonObject> result = new AriesObject<JsonObject>();
             List<string> keywordFieldList = new List<string>();
             foreach (var item in request.KeywordFields)
             {
@@ -82,9 +82,9 @@ namespace aries.galileo.query
             }
             return result;
         }
-        public async Task<AriesObject<JsonArray>> SearchAsync(SearchReq request)
+        public async Task<AriesObject<JsonObject>> SearchAsync(SearchReq request)
         {
-            AriesObject<JsonArray> result = new();
+            AriesObject<JsonObject> result = new();
             List<string> keywordFieldList = new();
             foreach (var item in request.KeywordFields)
             {

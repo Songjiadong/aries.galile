@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\aries\aries.common\aries.common.csproj" />
+    <ProjectReference Include="..\..\aries.common\aries.common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="..\aries.proto\base\common.proto" GrpcServices="Client" Link="Protos\common.proto" ProtoRoot="..\aries.proto\" />
