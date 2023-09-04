@@ -52,7 +52,7 @@ namespace aries.service.Controllers
                 "Title","Name","Abstract","Introduction"
             };
             req.HighlightFields.AddRange(highlightFields);
-            result =  Search<GalileoController, AriesJsonObjResp>( async () => {
+            result = SearchWithTotal<GalileoController, AriesJsonObjResp>( async () => {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$Search", req);
                 });
             return result;
@@ -124,7 +124,7 @@ namespace aries.service.Controllers
                }
             };
             req.HighlightFields.AddRange(highlightFields);
-            result = Search<GalileoController, AriesJsonObjResp>(async () =>
+            result = SearchWithTotal<GalileoController, AriesJsonObjResp>(async () =>
             {
                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonObjResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
             });
