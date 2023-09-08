@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using AriesGalileoGrpc = aries.galileo.grpc;
 using AriesCollectorGrpc = aries.collector.grpc;
+using AriesPorterGrpc = aries.porter.grpc;
 using aries.service.galileo.Views.request;
+using AriesPorter= aries.service.poarter.Views.request;
 using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
@@ -198,8 +200,19 @@ namespace aries.service.Controllers
                  return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
              });
             return result;
-           
         }
-       
+        [HttpPost("similarRecommendList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult GetSimilarRecommendList(AriesPorter.SearchReq searchReq) 
+        {
+            ActionResult result;
+            AriesPorterGrpc.SearchReq req = searchReq.Convert();
+            result = Search<GalileoController, AriesJsonListResp>(async () =>
+            {
+                return await client.InvokeMethodGrpcAsync<AriesPorterGrpc.SearchReq, AriesJsonListResp>(daprappqueryId, "Porter$Query$GetSimilarRecommendList", req);
+            });
+            return result;
+        }
     }
 }
