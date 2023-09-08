@@ -1,0 +1,8 @@
+syntax = "proto3";
+option csharp_namespace = "aries.porter.grpc";
+package aries;
+
+message SearchReq {
+   string Keyword=1;
+   int32 Top=2;
+}
