@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\aries.proto\base\common.proto" GrpcServices="Server" Link="Protos\common.proto" ProtoRoot="..\aries.proto\" />
+    <Protobuf Include="..\aries.proto\base\aries.proto" GrpcServices="Server" Link="Protos\aries.proto" ProtoRoot="..\aries.proto\" />
     <Protobuf Include="..\aries.proto\collector\collector.proto" GrpcServices="Server" Link="Protos\collector.proto" ProtoRoot="..\aries.proto\" />
   </ItemGroup>
 
