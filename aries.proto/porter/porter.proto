@@ -6,3 +6,10 @@ message SearchReq {
    string Keyword=1;
    int32 Top=2;
 }
+message RecommendReq{
+   PorterInfo req=1;
+}
+message PorterInfo{
+   string Id=1;
+   string Title=2;
+}
