@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["aries.galile.query/aries.galile.query.csproj", "aries.galile.query/"]
-RUN dotnet restore "aries.galile.query/aries.galile.query.csproj"
+COPY ["aries.galileo.query/aries.galileo.query.csproj", "aries.galileo.query/"]
+RUN dotnet restore "aries.galileo.query/aries.galileo.query.csproj"
 COPY . .
-WORKDIR "/src/aries.galile.query"
-RUN dotnet build "aries.galile.query.csproj" -c Release -o /app/build
+WORKDIR "/src/aries.galileo.query"
+RUN dotnet build "aries.galileo.query.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "aries.galile.query.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "aries.galileo.query.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "aries.galile.query.dll"]
+ENTRYPOINT ["dotnet", "aries.galileo.query.dll"]

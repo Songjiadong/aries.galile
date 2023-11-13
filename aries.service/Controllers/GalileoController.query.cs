@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using AriesGalileoGrpc = aries.galileo.grpc;
 using AriesCollectorGrpc = aries.collector.grpc;
+using AriesPorterGrpc = aries.porter.grpc;
 using aries.service.galileo.Views.request;
+using AriesPorter= aries.service.poarter.Views.request;
 using aries.common;
 using aries.common.net;
 using Google.Protobuf.WellKnownTypes;
+using aries.common.db;
 
 namespace aries.service.Controllers
 {
@@ -18,6 +21,13 @@ namespace aries.service.Controllers
         {
             ActionResult result;
             AriesGalileoGrpc.SearchReq req = searchReq.Convert();
+            if (searchReq.Sort == galileo.SortTypeEnum.Score) { }
+            else 
+            {
+                List<AriesGalileoGrpc.EsSortField> sortFields = new List<AriesGalileoGrpc.EsSortField>()
+                {new AriesGalileoGrpc.EsSortField(){Sort= "PublishAt",SortType=(int)SortTypeEnum.Desc } };
+                req.SortFields.AddRange(sortFields);
+            }
             req.Boost = 1;
             //req.PhraseSlop = 1;
             List<AriesGalileoGrpc.EsQueryItemField> keywordFields = new()
@@ -44,8 +54,8 @@ namespace aries.service.Controllers
                 "Title","Name","Abstract","Introduction"
             };
             req.HighlightFields.AddRange(highlightFields);
-            result =  Search<GalileoController, AriesJsonListResp>( async () => {
-                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$Search", req);
+            result = SearchWithTotal<GalileoController, AriesJsonObjResp>( async () => {
+                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchReq, AriesJsonObjResp>(this.daprappqueryId, "Galileo$Query$Search", req);
                 });
             return result;
         }
@@ -56,6 +66,13 @@ namespace aries.service.Controllers
         {
             ActionResult result;
             AriesGalileoGrpc.SearchByIndexReq req = searchReq.Convert();
+            if (searchReq.Sort == galileo.SortTypeEnum.Score) { }
+            else
+            {
+                List<AriesGalileoGrpc.EsSortField> sortFields = new List<AriesGalileoGrpc.EsSortField>() 
+                {new AriesGalileoGrpc.EsSortField(){Sort= "PublishAt",SortType=(int)SortTypeEnum.Desc } };
+                req.SortFields.AddRange(sortFields);
+            }
             req.Boost = 1;
             //req.PhraseSlop = 1;
             List<AriesGalileoGrpc.EsQueryItemField> keywordFields = searchReq.Index switch
@@ -109,9 +126,9 @@ namespace aries.service.Controllers
                }
             };
             req.HighlightFields.AddRange(highlightFields);
-            result = Search<GalileoController, AriesJsonListResp>(async () =>
+            result = SearchWithTotal<GalileoController, AriesJsonObjResp>(async () =>
             {
-                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$SearchByIndex", req);
+                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SearchByIndexReq, AriesJsonObjResp>(this.daprappqueryId, "Galileo$Query$SearchByIndex", req);
             });
             return result;
         }
@@ -127,7 +144,7 @@ namespace aries.service.Controllers
             req.Size = 10;
             req.FuzzyEditDistance = 2;
             result = Search<GalileoController, AriesJsonListResp>(async () => {
-                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$AutoComplete", req);
+                return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.SuggesterReq, AriesJsonListResp>(this.daprappqueryId, "Galileo$Query$AutoComplete", req);
             });
             return result;
         }
@@ -164,7 +181,7 @@ namespace aries.service.Controllers
             };
             result=DoAction<GalileoController>(async () =>
             {
-                await client.InvokeMethodGrpcAsync<AriesCollectorGrpc.CollectInfo, Empty>(daprappqueryId, "Collector$Manage$UserBehaviorCollect", req);
+                await client.InvokeMethodGrpcAsync<AriesCollectorGrpc.CollectInfo, Empty>(this.daprappqueryId, "Collector$Manage$UserBehaviorCollect", req);
             });
             return result;
         }
@@ -180,11 +197,22 @@ namespace aries.service.Controllers
             };
             result = Search<GalileoController, AriesJsonListResp>(async () =>
              {
-                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonListResp>(daprappqueryId, "Galileo$Query$GetTopList", req);
+                 return await client.InvokeMethodGrpcAsync<AriesGalileoGrpc.TopReq, AriesJsonListResp>(this.daprappqueryId, "Galileo$Query$GetTopList", req);
              });
             return result;
-           
         }
-       
+        [HttpPost("similarRecommendList")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult GetSimilarRecommendList(AriesPorter.SearchReq searchReq) 
+        {
+            ActionResult result;
+            AriesPorterGrpc.SearchReq req = searchReq.Convert();
+            result = Search<GalileoController, AriesJsonListResp>(async () =>
+            {
+                return await client.InvokeMethodGrpcAsync<AriesPorterGrpc.SearchReq, AriesJsonListResp>(this.daprporterqueryId, "Porter$Query$GetSimilarRecommendList", req);
+            });
+            return result;
+        }
     }
 }

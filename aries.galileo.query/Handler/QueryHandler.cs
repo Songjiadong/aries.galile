@@ -8,7 +8,6 @@ using aries.common;
 using System.Text.Json.Nodes;
 using aries.common.db.phoenix;
 using System.Text.Json;
-using Nest;
 using aries.common.db.neo4j;
 
 namespace aries.galileo.query
@@ -23,9 +22,9 @@ namespace aries.galileo.query
             this.esClient = esClient;
             // this.phoenixClient = phoenixClient;
         }
-        public async Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq request)
+        public async Task<AriesObject<JsonObject>> SearchByIndexAsync(SearchByIndexReq request)
         {
-            AriesObject<JsonArray> result = new AriesObject<JsonArray>();
+            AriesObject<JsonObject> result = new AriesObject<JsonObject>();
             List<string> keywordFieldList = new List<string>();
             foreach (var item in request.KeywordFields)
             {
@@ -83,9 +82,9 @@ namespace aries.galileo.query
             }
             return result;
         }
-        public async Task<AriesObject<JsonArray>> SearchAsync(SearchReq request)
+        public async Task<AriesObject<JsonObject>> SearchAsync(SearchReq request)
         {
-            AriesObject<JsonArray> result = new();
+            AriesObject<JsonObject> result = new();
             List<string> keywordFieldList = new();
             foreach (var item in request.KeywordFields)
             {
@@ -131,8 +130,22 @@ namespace aries.galileo.query
                     PhraseFieldList = phraseFieldList,
                     Boost = request.Boost,
                     PhraseSlop = request.PhraseSlop,
-                }
+                },
+                   
             };
+            if (request.SortFields is not null && request.SortFields.Count > 0) 
+            {
+                SortList sortList = new SortList();
+                foreach (var item in request.SortFields)
+                {
+                    sortList.Sorts.Add(new SortInfo()
+                    {
+                        SortName = item.Sort,
+                        SortType = ((SortTypeEnum)item.SortType)
+                    });
+                }
+                req.Sort = sortList;
+            }
             try
             {
 
@@ -220,7 +233,7 @@ namespace aries.galileo.query
             //        Count = Convert.ToInt64(dr["top_count"])
             //    });
             //}
-            return result;
+            return await Task.FromResult(result);
         }
     }
 }

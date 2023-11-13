@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["aries.graph.query/aries.graph.query.csproj", "aries.graph.query/"]
-RUN dotnet restore "aries.graph.query/aries.graph.query.csproj"
+COPY ["aries.galaxy.query/aries.galaxy.query.csproj", "aries.galaxy.query/"]
+RUN dotnet restore "aries.galaxy.query/aries.galaxy.query.csproj"
 COPY . .
-WORKDIR "/src/aries.graph.query"
-RUN dotnet build "aries.graph.query.csproj" -c Release -o /app/build
+WORKDIR "/src/aries.galaxy.query"
+RUN dotnet build "aries.galaxy.query.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "aries.graph.query.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "aries.galaxy.query.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "aries.graph.query.dll"]
+ENTRYPOINT ["dotnet", "aries.galaxy.query.dll"]

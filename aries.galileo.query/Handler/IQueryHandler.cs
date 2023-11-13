@@ -11,13 +11,13 @@ namespace aries.galileo.query
         /// </summary>
         /// <param name="request">request</param>
         /// <returns>查询数据集</returns>
-        Task<AriesObject<JsonArray>> SearchAsync(SearchReq request);
+        Task<AriesObject<JsonObject>> SearchAsync(SearchReq request);
         /// <summary>
         /// 根据Index进行搜索操作
         /// </summary>
         /// <param name="request">request</param>
         /// <returns>查询数据集</returns>
-        Task<AriesObject<JsonArray>> SearchByIndexAsync(SearchByIndexReq requst);
+        Task<AriesObject<JsonObject>> SearchByIndexAsync(SearchByIndexReq requst);
         /// <summary>
         /// 全局提示操作
         /// </summary>
